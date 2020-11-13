@@ -1,19 +1,20 @@
 import React from 'react';
+import './addmenu.css';
 
 const Header1 = () => {
-    return(<h4>Название:</h4>)
+    return(<h4 className="name">Название:</h4>)
 }
 
 const Header2 = () => {
-    return(<h4>Размер:</h4>)
+    return(<h4 className="size">Размер:</h4>)
 }
 
 const Header3 = () => {
-    return(<h4>Тип:</h4>)
+    return(<h4 className="addmenu-type">Тип:</h4>)
 }
 
 const Field = () => {
-    return(<input type="text"/>)
+    return(<input className="name-input" type="text"/>)
 }
 
 const Select1 = () => {
@@ -33,6 +34,14 @@ const Select2 = () => {
     )
 }
 
+const Btn1 = () => {
+    return (<button>Добавить свойство</button>)
+}
+
+const Btn2 = () => {
+    return (<button>Добавить вершину</button>)
+}
+
 const AddMenu = () => {
     return (
         <div>
@@ -42,6 +51,8 @@ const AddMenu = () => {
             <Select1/>
             <Header3/>
             <Select2/>
+            <Btn1/>
+            <Btn2/>
         </div>
     )
 }

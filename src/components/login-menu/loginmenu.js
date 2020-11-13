@@ -1,45 +1,46 @@
 import React from 'react';
+import './loginmenu.css';
 
 const Header1 = () => {
-    return(<h4>Сервер:</h4>)
+    return(<h4 className="server">Сервер:</h4>)
 }
 
 const Header2 = () => {
-    return(<h4>Имя пользователя:</h4>)
+    return(<h4 className="name">Имя пользователя:</h4>)
 }
 
 const Header3 = () => {
-    return(<h4>Пароль:</h4>)
+    return(<h4 className="pass">Пароль:</h4>)
 }
 
 const Field1 = () => {
-    return(<input type="text"/>)
+    return(<input className="server-input" type="text"/>)
 }
 
 const Field2 = () => {
-    return(<input type="text"/>)
+    return(<input className="name-input" type="text"/>)
 }
 
 const Field3 = () => {
-    return(<input type="text"/>)
+    return(<input className="pass-input" type="text"/>)
 }
 
-const Button = () => {
+const Btn = () => {
     const text="Вход";
-    return(<button>{text}</button>)
+    return(<button className="button-loginmenu">{text}</button>)
 }
 
 
 const LoginMenu = () => {
     return (
-        <div>
+        <div className="login-menu">
             <Header1/>
             <Field1/>
             <Header2/>
             <Field2/>
             <Header3/>
             <Field3/>
-            <Button/>
+            <Btn/>
         </div>
     )
 }
