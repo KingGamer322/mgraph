@@ -1,20 +1,21 @@
 import React from 'react';
+import './relationmenu.css';
 
 const Header1 = () => {
-    return (<h4>Начальная вершина:</h4>)
+    return (<h4 className="relationmenufirstname">Начальная вершина:</h4>)
 }
 
 const Header2 = () => {
-    return (<h4>Конечная вершина:</h4>)
+    return (<h4 className="relationmenusecondname">Конечная вершина:</h4>)
 }
 
 const Header3 = () => {
-    return (<h4>Тип ребра (если удаляете, то неважно):</h4>)
+    return (<h4 className="relationmenutype">Тип ребра (если удаляете, то неважно):</h4>)
 }
 
 const Select1 = () => {
     return (
-        <select>
+        <select className="relationmenuselectmenu1">
             <option></option>
         </select>
     )
@@ -22,7 +23,7 @@ const Select1 = () => {
 
 const Select2 = () => {
     return (
-        <select>
+        <select className="relationmenuselectmenu2">
             <option></option>
         </select>
     )
@@ -30,7 +31,7 @@ const Select2 = () => {
 
 const Select3 = () => {
     return (
-        <select>
+        <select className="relationmenuselectmenu3">
             <option value="use">USE</option>
             <option value="ispartof">IS PART OF</option>
         </select>
@@ -38,16 +39,16 @@ const Select3 = () => {
 }
 
 const Btn1 = () => {
-    return (<button>Добавить</button>)
+    return (<button className="relationmenubutton1">Добавить</button>)
 }
 
 const Btn2 = () => {
-    return (<button>Удалить</button>)
+    return (<button className="relationmenubutton2">Удалить</button>)
 }
 
 const RelationMenu = () => {
     return (
-        <div>
+        <div className="relationmenu">
             <Header1/>
             <Select1/>
             <Header2/>

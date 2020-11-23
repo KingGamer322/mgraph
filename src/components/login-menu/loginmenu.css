@@ -1,52 +1,60 @@
 .login-menu {
     margin-top: 5px;
-    width: 15vw;
+    width: 18vw;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: left;
     border: #aaaaaa;
     border-style: ridge;
 }
 
 .server {
     font-family: Arial;
-    margin-top: 3px;
-    margin-right: 115px;
+    margin-top: 5px;
+    margin-left: 10px;
     font-weight: normal;
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .name {
     font-family: Arial;
-    margin-right: 35px;
+    margin-left: 10px;
     font-weight: normal;
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .pass {
     font-family: Arial;
-    margin-right: 115px;
+    margin-left: 10px;
     font-weight: normal;
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .server-input {
+    margin-left: 10px;
+    margin-right: 10px;
     margin-top: -20px;
     margin-bottom: -20px;
 }
 
 .name-input {
+    margin-left: 10px;
+    margin-right: 10px;
     margin-top: -20px;
     margin-bottom: -20px;
 }
 
 .pass-input {
+    margin-left: 10px;
+    margin-right: 10px;
     margin-top: -20px;
 }
 
 .button-loginmenu {
     margin-top: 10px;
-    width: 178px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
     box-shadow: inset 0px 1px 0px 0px #54a3f7;
     background: linear-gradient(to bottom, #007dc1 5%, #0061a7 100%);
     background-color: #007dc1;

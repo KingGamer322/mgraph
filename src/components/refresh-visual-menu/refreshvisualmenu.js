@@ -1,8 +1,16 @@
 import React from 'react';
+import './refreshvisualmenu.css';
 
-const RefreshVisualMenu = () => {
+const Btn = () => {
     const text="Обновить визуализацию";
-    return (<button>{text}</button>)
+    return (<button className="refreshvisualmenubutton">{text}</button>)
+}
+const RefreshVisualMenu = () => {
+    return (
+        <div className="refreshvisualmenu">
+            <Btn/>
+        </div>
+    )
 }
 
 export default RefreshVisualMenu;

@@ -1,6 +1,28 @@
 .app {
-    margin: 0;
+    display: flex;
+}
+
+.app-blocks {
+    margin-left: 81%;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: center;
+    background-color: #eeeeee;
+}
+
+.textaddversh {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-wrap: break-word;
+    background-color: #ffffff;
+    width: 18vw;
+    height: 2vw;
+    margin-bottom: -4px;
+}
+
+.addversh {
+    margin-top: -0.5px;
+    font-size: 16px;
+    font-weight: normal;
 }

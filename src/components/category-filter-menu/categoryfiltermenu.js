@@ -1,12 +1,13 @@
 import React from 'react';
+import './categoryfiltermenu.css';
 
 const Header1 = () => {
-    return (<h4>Начальная вершина:</h4>)
+    return (<h4 className="categoryfiltermenuname">Начальная вершина:</h4>)
 }
 
 const Select1 = () => {
     return (
-        <select>
+        <select className="categoryfiltermenuselectmenu">
             <option></option>
         </select>
     )
@@ -14,17 +15,17 @@ const Select1 = () => {
 
 const Btn1 = () => {
     const text="Показать в визуализации";
-    return (<button>{text}</button>)
+    return (<button className="categoryfiltermenubutton1">{text}</button>)
 }
 
 const Btn2 = () => {
     const text="Добавить в визуализацию";
-    return (<button>{text}</button>)
+    return (<button className="categoryfiltermenubutton2">{text}</button>)
 }
 
 const CategoryFilterMenu = () => {
     return (
-        <div>
+        <div className="categoryfiltermenu">
             <Header1/>
             <Select1/>
             <Btn1/>

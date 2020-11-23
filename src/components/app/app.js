@@ -14,16 +14,21 @@ import './app.css';
 const App = () => {
     return (
         <div className="app">
-            <LoginMenu/>
-            <AddMenu/>
-            <ConnectionsMenu/>
-            <DistanceFilterMenu/>
-            <CategoryFilterMenu/>
-            <SearchMenu/>
-            <AddBigMenu/>
-            <ChangeMenu/>
-            <RelationMenu/>
-            <RefreshVisualMenu/>
+            <div className="app-blocks">
+                <LoginMenu/>
+                <div className="textaddversh">
+                    <h4 className="addversh">Добавить вершину</h4>
+                </div>
+                <AddMenu/>
+                <ConnectionsMenu/>
+                <DistanceFilterMenu/>
+                <CategoryFilterMenu/>
+                <SearchMenu/>
+                <AddBigMenu/>
+                <ChangeMenu/>
+                <RelationMenu/>
+                <RefreshVisualMenu/>
+            </div>
         </div>
     )
 }

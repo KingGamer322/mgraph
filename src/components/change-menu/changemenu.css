@@ -1,4 +1,4 @@
-.addbigmenu {
+.changemenu {
     margin-top: 5px;
     width: 18vw;
     display: flex;
@@ -8,7 +8,7 @@
     border-style: ridge;
 }
 
-.addbigmenuname {
+.changemenuname {
     font-family: Arial;
     margin-top: 15px;
     margin-left: 10px;
@@ -16,49 +16,69 @@
     font-size: 15px;
 }
 
-.addbigmenutheme {
+.changemenutitle {
     font-family: Arial;
     margin-left: 10px;
     font-weight: normal;
     font-size: 15px;
 }
 
-.addbigmenudescription {
+.changemenutheme {
     font-family: Arial;
     margin-left: 10px;
     font-weight: normal;
     font-size: 15px;
 }
 
-.addbigmenuareaofusage {
+.changemenudescription {
     font-family: Arial;
     margin-left: 10px;
     font-weight: normal;
     font-size: 15px;
 }
 
-.addbigmenusize {
+.changemenuareaofusage {
     font-family: Arial;
     margin-left: 10px;
     font-weight: normal;
     font-size: 15px;
 }
 
-.addbigmenuinput1 {
+.changemenusize {
+    font-family: Arial;
+    margin-left: 10px;
+    font-weight: normal;
+    font-size: 15px;
+}
+
+.changemenuselectmenu1 {
     margin-left: 10px;
     margin-right: 10px;
     margin-top: -20px;
     margin-bottom: -15px;
 }
 
-.addbigmenuinput2 {
+.changemenuselectmenu2 {
     margin-left: 10px;
     margin-right: 10px;
     margin-top: -20px;
     margin-bottom: -15px;
 }
 
-.addbigmenuinput3 {
+.changemenuselectmenu3 {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: -20px;
+}
+
+.changemenuinput1 {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: -20px;
+    margin-bottom: -15px;
+}
+
+.changemenuinput2 {
     margin-left: 10px;
     margin-right: 10px;
     margin-top: -20px;
@@ -68,7 +88,7 @@
     text-align: left;
 }
 
-.addbigmenuinput4 {
+.changemenuinput3 {
     margin-left: 10px;
     margin-right: 10px;
     margin-top: -20px;
@@ -78,13 +98,26 @@
     text-align: left;
 }
 
-.addbigmenuselectmenu {
+.changemenubutton1 {
+    margin-top: 10px;
     margin-left: 10px;
     margin-right: 10px;
-    margin-top: -20px;
+    box-shadow: inset 0px 1px 0px 0px #54a3f7;
+    background: linear-gradient(to bottom, #007dc1 5%, #0061a7 100%);
+    background-color: #007dc1;
+    border-radius: 3px;
+    border: 1px solid #124d77;
+    display: inline-block;
+    cursor: pointer;
+    color: #ffffff;
+    font-family: Arial;
+    font-size: 13px;
+    padding: 6px 24px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #154682;
 }
 
-.addbigmenubutton {
+.changemenubutton2 {
     margin-top: 10px;
     margin-left: 10px;
     margin-right: 10px;

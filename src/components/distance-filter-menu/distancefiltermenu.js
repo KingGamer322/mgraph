@@ -1,32 +1,45 @@
 import React from 'react';
+import './distancefiltermenu.css';
 
 const Header1 = () => {
-    return(<h4>Начальная вершина:</h4>)
+    return(<h4 className="distancefiltermenufirstname">Начальная вершина:</h4>)
 }
 
 const Header2 = () => {
-    return(<h4>Дальность</h4>)
+    return(<h4 className="distancefiltermenudistance">Дальность</h4>)
 }
 
 const Select1 = () => {
     return(
-        <select>
+        <select className="distancefiltermenuselectmenu">
             <option></option>
         </select>
     )
 }
 
 const Field1 = () => {
-    return(<input type="text"/>)
+    return(<input className="distancefiltermenuname-input" type="text"/>)
+}
+
+const Btn1 = () => {
+    const text="Показать в визуализации";
+    return (<button className="distancefiltermenubutton1">{text}</button>)
+}
+
+const Btn2 = () => {
+    const text="Добавить в визуализацию";
+    return (<button className="distancefiltermenubutton2">{text}</button>)
 }
 
 const DistanceFilterMenu = () => {
     return (
-        <div>
+        <div className="distancefiltermenu">
             <Header1/>
             <Select1/>
             <Header2/>
             <Field1/>
+            <Btn1/>
+            <Btn2/>
         </div>
     )
 }

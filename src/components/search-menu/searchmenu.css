@@ -1,0 +1,16 @@
+.searchmenu {
+    margin-top: 5px;
+    width: 18vw;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    border: #aaaaaa;
+    border-style: ridge;
+}
+
+.searchmenuinput {
+    margin-top: 15px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
