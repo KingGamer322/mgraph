@@ -92,6 +92,8 @@ const App = () => {
     )
 }
 
+export default App;
+
 // let viz
 // let driver
 // let username, password
@@ -945,5 +947,3 @@ const App = () => {
 //         </div>
 //     )
 // }
-
-export default App;
