@@ -1,4 +1,5 @@
 import React from 'react';
+import Graph from 'react-graph-vis';
 import LoginMenu from '../login-menu';
 import AddBigMenu from '../add-big-menu';
 import AddMenu from '../add-menu';
@@ -12,8 +13,66 @@ import SearchMenu from '../search-menu';
 import './app.css';
 
 const App = () => {
+    const graph = {
+        nodes: [
+            { id: 1, label: "Вершина 1", color: "#e04141" },
+            { id: 2, label: "Вершина 2", color: "#e09c41" },
+            { id: 3, label: "Вершина 3", color: "#e0df41" },
+            { id: 4, label: "Вершина 4", color: "#7be041" },
+            { id: 5, label: "Вершина 5", color: "#41e0c9" }
+        ],
+        edges: [{ from: 1, to: 2 }, { from: 1, to: 3 }, { from: 2, to: 4 }, { from: 2, to: 5 }]
+    };
+
+    const options = {
+        layout: {
+            hierarchical: false,
+            randomSeed: undefined
+        },
+        edges: {
+            color: "#000000"
+        },
+        interaction: {
+            dragView: true,
+            zoomView: true
+        }
+    };
+
+    const events = {
+        select: function(event) {
+            var { nodes, edges } = event;
+            console.log("Selected nodes:");
+            console.log(nodes);
+            console.log("Selected edges:");
+            console.log(edges);
+        }
+    };
+
+    // const App = () => {
+//     return (
+//         <div className="app">
+//             <div className="app-blocks">
+//                 <LoginMenu/>
+//                 <div className="textaddversh">
+//                     <h4 className="addversh">Добавить вершину</h4>
+//                 </div>
+//                 <AddMenu/>
+//                 <ConnectionsMenu/>
+//                 <DistanceFilterMenu/>
+//                 <CategoryFilterMenu/>
+//                 <SearchMenu/>
+//                 <AddBigMenu/>
+//                 <ChangeMenu/>
+//                 <RelationMenu/>
+//                 <RefreshVisualMenu/>
+//             </div>
+//         </div>
+//     )
+// }
+
     return (
         <div className="app">
+            <Graph graph={graph} options={options} events={events} style={ { width: "85%", height: "650px" } } />
             <div className="app-blocks">
                 <LoginMenu/>
                 <div className="textaddversh">
@@ -32,8 +91,6 @@ const App = () => {
         </div>
     )
 }
-
-export default App;
 
 // let viz
 // let driver
@@ -866,3 +923,27 @@ export default App;
 // координаты применятся не к тем узлам. Вывод - хранить координаты
 // индивидуально в узлах
 // */
+
+// const App = () => {
+//     return (
+//         <div className="app">
+//             <div className="app-blocks">
+//                 <LoginMenu/>
+//                 <div className="textaddversh">
+//                     <h4 className="addversh">Добавить вершину</h4>
+//                 </div>
+//                 <AddMenu/>
+//                 <ConnectionsMenu/>
+//                 <DistanceFilterMenu/>
+//                 <CategoryFilterMenu/>
+//                 <SearchMenu/>
+//                 <AddBigMenu/>
+//                 <ChangeMenu/>
+//                 <RelationMenu/>
+//                 <RefreshVisualMenu/>
+//             </div>
+//         </div>
+//     )
+// }
+
+export default App;
