@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Graph from 'react-graph-vis';
+import cloneDeep from 'lodash/cloneDeep';
 import LoginMenu from '../login-menu';
 import AddBigMenu from '../add-big-menu';
 import AddMenu from '../add-menu';
@@ -12,79 +13,215 @@ import RelationMenu from '../relation-menu';
 import SearchMenu from '../search-menu';
 import './app.css';
 
-const App = () => {
-    const graph = {
-        nodes: [
-            { id: 1, label: "Вершина 1", color: "#e04141" },
-            { id: 2, label: "Вершина 2", color: "#e09c41" },
-            { id: 3, label: "Вершина 3", color: "#e0df41" },
-            { id: 4, label: "Вершина 4", color: "#7be041" },
-            { id: 5, label: "Вершина 5", color: "#41e0c9" }
-        ],
-        edges: [{ from: 1, to: 2 }, { from: 1, to: 3 }, { from: 2, to: 4 }, { from: 2, to: 5 }]
-    };
 
-    const options = {
-        layout: {
-            hierarchical: false,
-            randomSeed: undefined
-        },
-        edges: {
-            color: "#000000"
-        },
-        interaction: {
-            dragView: true,
-            zoomView: true
+
+const graph = {
+    nodes: [
+        { id: 1, label: "Вершина 1", color: "#e04141", size: 14 },
+        { id: 2, label: "Вершина 2", color: "#e09c41", size: 14 },
+        { id: 3, label: "Вершина 3", color: "#e0df41", size: 18 },
+        { id: 4, label: "Вершина 4", color: "#7be041", size: 18 },
+        { id: 5, label: "Вершина 5", color: "#41e0c9", size: 14 }
+    ],
+    edges: [
+        { from: 1, to: 2, label: "Использует"},
+        { from: 1, to: 3, label: "Содержит"},
+        { from: 1, to: 4, label: "Формирует"},
+        { from: 2, to: 4, label: "Доставляет"},
+        { from: 2, to: 5, label: "Проверяет"}
+    ]
+}
+
+const options = {
+    layout: {
+        hierarchical: false,
+        randomSeed: undefined
+    },
+    nodes: {
+        shape: 'dot',
+        font: {
+            size: 16
         }
-    };
-
-    const events = {
-        select: function(event) {
-            var { nodes, edges } = event;
-            console.log("Selected nodes:");
-            console.log(nodes);
-            console.log("Selected edges:");
-            console.log(edges);
+    },
+    edges: {
+        color: "#000000",
+        font: {
+            size: 12,
+            mono: {
+                vadjust: 0
+            }
         }
-    };
+    },
+    interaction: {
+        dragView: true,
+        zoomView: false
+    }
+}
 
-    // const App = () => {
-//     return (
-//         <div className="app">
-//             <div className="app-blocks">
-//                 <LoginMenu/>
-//                 <div className="textaddversh">
-//                     <h4 className="addversh">Добавить вершину</h4>
-//                 </div>
-//                 <AddMenu/>
-//                 <ConnectionsMenu/>
-//                 <DistanceFilterMenu/>
-//                 <CategoryFilterMenu/>
-//                 <SearchMenu/>
-//                 <AddBigMenu/>
-//                 <ChangeMenu/>
-//                 <RelationMenu/>
-//                 <RefreshVisualMenu/>
-//             </div>
-//         </div>
-//     )
-// }
+const events = {
+    select: function(event) {
+        var { nodes, edges } = event;
+        console.log("Selected nodes:");
+        console.log(nodes);
+        console.log("Selected edges:");
+        console.log(edges);
+    }
+}
+
+function App() {
+    const [graphData, setGraphData] = useState(graph);//пока что используется для добавления вершины (изменение графа)
+    const [inputNameNode, setInputNameNode] = useState('');//пока что используется для ввода имени вершины в меню "Добавить вершину"
+    // const [inputFeature, setInputFeature] = useState('');
+    // const [inputFeatureValue, setInputFeatureValue] = useState('');
+    const [optionSize, setOptionSize] = useState(14);
+    const [optionFirstNode, setOptionFirstNode] = useState();
+    const [optionSecondNode, setOptionSecondNode] = useState();
+    
+    const generateNode = e => {
+        let newGraph = cloneDeep(graphData);
+        let inputtext = cloneDeep(inputNameNode);
+        let optionsizechoice = cloneDeep(optionSize);
+        const newNodeId = Math.max(...newGraph.nodes.map(d => d.id)) + 1;
+        let newNode = { id: newNodeId, label: `${inputtext}`, color: "#ffffff", size: 14};
+        if (optionsizechoice === "USUAL") {
+            newNode = { id: newNodeId, label: `${inputtext}`, color: "#ffffff", size: 14}
+        }
+        else if (optionsizechoice === "BIG") {
+            newNode = { id: newNodeId, label: `${inputtext}`, color: "#ffffff", size: 18}
+        }
+        newGraph.nodes.push(newNode);
+        setGraphData(newGraph);
+    }
+
+    const connectNodes = e => {
+        let newGraph = cloneDeep(graphData);
+        let optionfirstchoice = cloneDeep(optionFirstNode);
+        let optionsecondchoice = cloneDeep(optionSecondNode);
+        let newEdge = { from: 1, to: 1};
+        if ((optionfirstchoice === "1") && (optionsecondchoice === "1")) {
+            newEdge = { from: 1, to: 1}
+        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "2")) {
+            newEdge = { from: 2, to: 2}
+        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "3")) {
+            newEdge = { from: 3, to: 3}
+        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "4")) {
+            newEdge = { from: 4, to: 4}
+        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "5")) {
+            newEdge = { from: 5, to: 5}
+        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "2")) {
+            newEdge = { from: 1, to: 2}
+        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "3")) {
+            newEdge = { from: 1, to: 3}
+        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "4")) {
+            newEdge = { from: 1, to: 4}
+        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "5")) {
+            newEdge = { from: 1, to: 5}
+        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "1")) {
+            newEdge = { from: 2, to: 1}
+        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "3")) {
+            newEdge = { from: 2, to: 3}
+        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "4")) {
+            newEdge = { from: 2, to: 4}
+        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "5")) {
+            newEdge = { from: 2, to: 5}
+        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "1")) {
+            newEdge = { from: 3, to: 1}
+        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "2")) {
+            newEdge = { from: 3, to: 2}
+        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "4")) {
+            newEdge = { from: 3, to: 4}
+        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "5")) {
+            newEdge = { from: 3, to: 5}
+        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "1")) {
+            newEdge = { from: 4, to: 1}
+        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "2")) {
+            newEdge = { from: 4, to: 2}
+        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "3")) {
+            newEdge = { from: 4, to: 3}
+        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "5")) {
+            newEdge = { from: 4, to: 5}
+        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "1")) {
+            newEdge = { from: 5, to: 1}
+        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "2")) {
+            newEdge = { from: 5, to: 2}
+        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "3")) {
+            newEdge = { from: 5, to: 3}
+        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "4")) {
+            newEdge = { from: 5, to: 4}
+        }
+        newGraph.edges.push(newEdge);
+        setGraphData(newGraph);
+    }
+    // function generateFeature() {
+    //     let newGraph = cloneDeep(graphData);
+    //     let inputtext2 = cloneDeep(inputFeature);
+    //     let inputtext3 = cloneDeep(inputFeatureValue);
+
+    //     return (
+    //         <div>
+    //             <input value={inputFeature} onInput={e => setInputFeature(e.target.value)}/>
+    //             <input value={inputFeatureValue} onInput={e => setInputFeatureValue(e.target.value)}/>
+    //         </div>
+    //     )
+    // }
 
     return (
         <div className="app">
-            <Graph graph={graph} options={options} events={events} style={ { width: "85%", height: "650px" } } />
+            <Graph graph={graphData} options={options} events={events} style={ { width: "90%", height: "650px" } } />
             <div className="app-blocks">
                 <LoginMenu/>
                 <div className="textaddversh">
                     <h4 className="addversh">Добавить вершину</h4>
                 </div>
                 <AddMenu/>
+                <input value={inputNameNode} onInput={e => setInputNameNode(e.target.value)}/>
+                <select name="option" onChange={e => setOptionSize(e.target.value)}>
+                    <option value="USUAL">Обычный</option>
+                    <option value="BIG">Большой</option>
+                </select>
+                <button onClick={generateNode}>Добавить вершину</button>
+                <div className="textconnectmenu">
+                    <h4 className="connectmenu">Связать вершины</h4>
+                </div>
+                <select name="optiontwo" onChange={e => setOptionFirstNode(e.target.value)}>
+                    <option value="1">Вершина 1</option>
+                    <option value="2">Вершина 2</option>
+                    <option value="3">Вершина 3</option>
+                    <option value="4">Вершина 4</option>
+                    <option value="5">Вершина 5</option>
+                </select>
+                <select name="optionthree" onChange={e => setOptionSecondNode(e.target.value)}>
+                    <option value="1">Вершина 1</option>
+                    <option value="2">Вершина 2</option>
+                    <option value="3">Вершина 3</option>
+                    <option value="4">Вершина 4</option>
+                    <option value="5">Вершина 5</option>
+                </select>
+                <button onClick={connectNodes}>Связать вершины</button>
                 <ConnectionsMenu/>
+                <div className="textfilterdistance">
+                    <h4 className="filterdistance">Фильтр по дистанции от вершины</h4>
+                </div>
                 <DistanceFilterMenu/>
+                <div className="textcategfilter">
+                    <h4 className="categfilter">Фильтр по разделу</h4>
+                </div>
                 <CategoryFilterMenu/>
+                <div className="textsearch">
+                    <h4 className="searmenu">Поиск</h4>
+                </div>
                 <SearchMenu/>
+                <div className="textaddbigmenu">
+                    <h4 className="bigmenu">Добавить вершину</h4>
+                </div>
                 <AddBigMenu/>
+                <div className="textchangemenu">
+                    <h4 className="chanmenu">Изменить/удалить вершину</h4>
+                </div>
                 <ChangeMenu/>
+                <div className="textrelat">
+                    <h4 className="relatmenu">Ребра</h4>
+                </div>
                 <RelationMenu/>
                 <RefreshVisualMenu/>
             </div>
