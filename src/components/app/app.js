@@ -55,6 +55,9 @@ const options = {
     interaction: {
         dragView: true,
         zoomView: false
+    },
+    physics: {
+        enabled: false
     }
 }
 
@@ -76,6 +79,7 @@ function App() {
     const [optionSize, setOptionSize] = useState(14);
     const [optionFirstNode, setOptionFirstNode] = useState();
     const [optionSecondNode, setOptionSecondNode] = useState();
+    const [optionTypeEdge, setOptionTypeEdge] = useState();
     
     const generateNode = e => {
         let newGraph = cloneDeep(graphData);
@@ -97,58 +101,263 @@ function App() {
         let newGraph = cloneDeep(graphData);
         let optionfirstchoice = cloneDeep(optionFirstNode);
         let optionsecondchoice = cloneDeep(optionSecondNode);
+        let optiontypechoice = cloneDeep(optionTypeEdge);
         let newEdge = { from: 1, to: 1};
-        if ((optionfirstchoice === "1") && (optionsecondchoice === "1")) {
+        if ((optionfirstchoice === "1") && (optionsecondchoice === "1") && (optiontypechoice==="uses")) {
             newEdge = { from: 1, to: 1}
-        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "2")) {
+        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "2") && (optiontypechoice==="uses")) {
             newEdge = { from: 2, to: 2}
-        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "3")) {
+        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "3") && (optiontypechoice==="uses")) {
             newEdge = { from: 3, to: 3}
-        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "4")) {
+        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "4") && (optiontypechoice==="uses")) {
             newEdge = { from: 4, to: 4}
-        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "5")) {
+        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "5") && (optiontypechoice==="uses")) {
             newEdge = { from: 5, to: 5}
-        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "2")) {
-            newEdge = { from: 1, to: 2}
-        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "3")) {
-            newEdge = { from: 1, to: 3}
-        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "4")) {
-            newEdge = { from: 1, to: 4}
-        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "5")) {
-            newEdge = { from: 1, to: 5}
-        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "1")) {
-            newEdge = { from: 2, to: 1}
-        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "3")) {
-            newEdge = { from: 2, to: 3}
-        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "4")) {
-            newEdge = { from: 2, to: 4}
-        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "5")) {
-            newEdge = { from: 2, to: 5}
-        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "1")) {
-            newEdge = { from: 3, to: 1}
-        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "2")) {
-            newEdge = { from: 3, to: 2}
-        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "4")) {
-            newEdge = { from: 3, to: 4}
-        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "5")) {
-            newEdge = { from: 3, to: 5}
-        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "1")) {
-            newEdge = { from: 4, to: 1}
-        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "2")) {
-            newEdge = { from: 4, to: 2}
-        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "3")) {
-            newEdge = { from: 4, to: 3}
-        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "5")) {
-            newEdge = { from: 4, to: 5}
-        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "1")) {
-            newEdge = { from: 5, to: 1}
-        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "2")) {
-            newEdge = { from: 5, to: 2}
-        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "3")) {
-            newEdge = { from: 5, to: 3}
-        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "4")) {
-            newEdge = { from: 5, to: 4}
-        }
+        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "2") && (optiontypechoice==="uses")) {
+            newEdge = { from: 1, to: 2, label: "Использует"}
+        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "3") && (optiontypechoice==="uses")) {
+            newEdge = { from: 1, to: 3, label: "Использует"}
+        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "4") && (optiontypechoice==="uses")) {
+            newEdge = { from: 1, to: 4, label: "Использует"}
+        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "5") && (optiontypechoice==="uses")) {
+            newEdge = { from: 1, to: 5, label: "Использует"}
+        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "1") && (optiontypechoice==="uses")) {
+            newEdge = { from: 2, to: 1, label: "Использует"}
+        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "3") && (optiontypechoice==="uses")) {
+            newEdge = { from: 2, to: 3, label: "Использует"}
+        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "4") && (optiontypechoice==="uses")) {
+            newEdge = { from: 2, to: 4, label: "Использует"}
+        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "5") && (optiontypechoice==="uses")) {
+            newEdge = { from: 2, to: 5, label: "Использует"}
+        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "1") && (optiontypechoice==="uses")) {
+            newEdge = { from: 3, to: 1, label: "Использует"}
+        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "2") && (optiontypechoice==="uses")) {
+            newEdge = { from: 3, to: 2, label: "Использует"}
+        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "4") && (optiontypechoice==="uses")) {
+            newEdge = { from: 3, to: 4, label: "Использует"}
+        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "5") && (optiontypechoice==="uses")) {
+            newEdge = { from: 3, to: 5, label: "Использует"}
+        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "1") && (optiontypechoice==="uses")) {
+            newEdge = { from: 4, to: 1, label: "Использует"}
+        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "2") && (optiontypechoice==="uses")) {
+            newEdge = { from: 4, to: 2, label: "Использует"}
+        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "3") && (optiontypechoice==="uses")) {
+            newEdge = { from: 4, to: 3, label: "Использует"}
+        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "5") && (optiontypechoice==="uses")) {
+            newEdge = { from: 4, to: 5, label: "Использует"}
+        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "1") && (optiontypechoice==="uses")) {
+            newEdge = { from: 5, to: 1, label: "Использует"}
+        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "2") && (optiontypechoice==="uses")) {
+            newEdge = { from: 5, to: 2, label: "Использует"}
+        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "3") && (optiontypechoice==="uses")) {
+            newEdge = { from: 5, to: 3, label: "Использует"}
+        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "4") && (optiontypechoice==="uses")) {
+            newEdge = { from: 5, to: 4, label: "Использует"}
+        }//uses
+        else if ((optionfirstchoice === "1") && (optionsecondchoice === "1") && (optiontypechoice==="contains")) {
+            newEdge = { from: 1, to: 1}
+        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "2") && (optiontypechoice==="contains")) {
+            newEdge = { from: 2, to: 2}
+        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "3") && (optiontypechoice==="contains")) {
+            newEdge = { from: 3, to: 3}
+        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "4") && (optiontypechoice==="contains")) {
+            newEdge = { from: 4, to: 4}
+        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "5") && (optiontypechoice==="contains")) {
+            newEdge = { from: 5, to: 5}
+        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "2") && (optiontypechoice==="contains")) {
+            newEdge = { from: 1, to: 2, label: "Содержит"}
+        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "3") && (optiontypechoice==="contains")) {
+            newEdge = { from: 1, to: 3, label: "Содержит"}
+        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "4") && (optiontypechoice==="contains")) {
+            newEdge = { from: 1, to: 4, label: "Содержит"}
+        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "5") && (optiontypechoice==="contains")) {
+            newEdge = { from: 1, to: 5, label: "Содержит"}
+        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "1") && (optiontypechoice==="contains")) {
+            newEdge = { from: 2, to: 1, label: "Содержит"}
+        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "3") && (optiontypechoice==="contains")) {
+            newEdge = { from: 2, to: 3, label: "Содержит"}
+        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "4") && (optiontypechoice==="contains")) {
+            newEdge = { from: 2, to: 4, label: "Содержит"}
+        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "5") && (optiontypechoice==="contains")) {
+            newEdge = { from: 2, to: 5, label: "Содержит"}
+        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "1") && (optiontypechoice==="contains")) {
+            newEdge = { from: 3, to: 1, label: "Содержит"}
+        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "2") && (optiontypechoice==="contains")) {
+            newEdge = { from: 3, to: 2, label: "Содержит"}
+        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "4") && (optiontypechoice==="contains")) {
+            newEdge = { from: 3, to: 4, label: "Содержит"}
+        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "5") && (optiontypechoice==="contains")) {
+            newEdge = { from: 3, to: 5, label: "Содержит"}
+        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "1") && (optiontypechoice==="contains")) {
+            newEdge = { from: 4, to: 1, label: "Содержит"}
+        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "2") && (optiontypechoice==="contains")) {
+            newEdge = { from: 4, to: 2, label: "Содержит"}
+        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "3") && (optiontypechoice==="contains")) {
+            newEdge = { from: 4, to: 3, label: "Содержит"}
+        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "5") && (optiontypechoice==="contains")) {
+            newEdge = { from: 4, to: 5, label: "Содержит"}
+        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "1") && (optiontypechoice==="contains")) {
+            newEdge = { from: 5, to: 1, label: "Содержит"}
+        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "2") && (optiontypechoice==="contains")) {
+            newEdge = { from: 5, to: 2, label: "Содержит"}
+        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "3") && (optiontypechoice==="contains")) {
+            newEdge = { from: 5, to: 3, label: "Содержит"}
+        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "4") && (optiontypechoice==="contains")) {
+            newEdge = { from: 5, to: 4, label: "Содержит"}
+        }//contains
+        else if ((optionfirstchoice === "1") && (optionsecondchoice === "1") && (optiontypechoice==="forms")) {
+            newEdge = { from: 1, to: 1}
+        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "2") && (optiontypechoice==="forms")) {
+            newEdge = { from: 2, to: 2}
+        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "3") && (optiontypechoice==="forms")) {
+            newEdge = { from: 3, to: 3}
+        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "4") && (optiontypechoice==="forms")) {
+            newEdge = { from: 4, to: 4}
+        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "5") && (optiontypechoice==="forms")) {
+            newEdge = { from: 5, to: 5}
+        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "2") && (optiontypechoice==="forms")) {
+            newEdge = { from: 1, to: 2, label: "Формирует"}
+        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "3") && (optiontypechoice==="forms")) {
+            newEdge = { from: 1, to: 3, label: "Формирует"}
+        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "4") && (optiontypechoice==="forms")) {
+            newEdge = { from: 1, to: 4, label: "Формирует"}
+        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "5") && (optiontypechoice==="forms")) {
+            newEdge = { from: 1, to: 5, label: "Формирует"}
+        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "1") && (optiontypechoice==="forms")) {
+            newEdge = { from: 2, to: 1, label: "Формирует"}
+        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "3") && (optiontypechoice==="forms")) {
+            newEdge = { from: 2, to: 3, label: "Формирует"}
+        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "4") && (optiontypechoice==="forms")) {
+            newEdge = { from: 2, to: 4, label: "Формирует"}
+        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "5") && (optiontypechoice==="forms")) {
+            newEdge = { from: 2, to: 5, label: "Формирует"}
+        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "1") && (optiontypechoice==="forms")) {
+            newEdge = { from: 3, to: 1, label: "Формирует"}
+        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "2") && (optiontypechoice==="forms")) {
+            newEdge = { from: 3, to: 2, label: "Формирует"}
+        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "4") && (optiontypechoice==="forms")) {
+            newEdge = { from: 3, to: 4, label: "Формирует"}
+        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "5") && (optiontypechoice==="forms")) {
+            newEdge = { from: 3, to: 5, label: "Формирует"}
+        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "1") && (optiontypechoice==="forms")) {
+            newEdge = { from: 4, to: 1, label: "Формирует"}
+        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "2") && (optiontypechoice==="forms")) {
+            newEdge = { from: 4, to: 2, label: "Формирует"}
+        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "3") && (optiontypechoice==="forms")) {
+            newEdge = { from: 4, to: 3, label: "Формирует"}
+        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "5") && (optiontypechoice==="forms")) {
+            newEdge = { from: 4, to: 5, label: "Формирует"}
+        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "1") && (optiontypechoice==="forms")) {
+            newEdge = { from: 5, to: 1, label: "Формирует"}
+        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "2") && (optiontypechoice==="forms")) {
+            newEdge = { from: 5, to: 2, label: "Формирует"}
+        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "3") && (optiontypechoice==="forms")) {
+            newEdge = { from: 5, to: 3, label: "Формирует"}
+        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "4") && (optiontypechoice==="forms")) {
+            newEdge = { from: 5, to: 4, label: "Формирует"}
+        }//forms
+        else if ((optionfirstchoice === "1") && (optionsecondchoice === "1") && (optiontypechoice==="delivers")) {
+            newEdge = { from: 1, to: 1}
+        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "2") && (optiontypechoice==="delivers")) {
+            newEdge = { from: 2, to: 2}
+        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "3") && (optiontypechoice==="delivers")) {
+            newEdge = { from: 3, to: 3}
+        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "4") && (optiontypechoice==="delivers")) {
+            newEdge = { from: 4, to: 4}
+        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "5") && (optiontypechoice==="delivers")) {
+            newEdge = { from: 5, to: 5}
+        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "2") && (optiontypechoice==="delivers")) {
+            newEdge = { from: 1, to: 2, label: "Доставляет"}
+        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "3") && (optiontypechoice==="delivers")) {
+            newEdge = { from: 1, to: 3, label: "Доставляет"}
+        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "4") && (optiontypechoice==="delivers")) {
+            newEdge = { from: 1, to: 4, label: "Доставляет"}
+        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "5") && (optiontypechoice==="delivers")) {
+            newEdge = { from: 1, to: 5, label: "Доставляет"}
+        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "1") && (optiontypechoice==="delivers")) {
+            newEdge = { from: 2, to: 1, label: "Доставляет"}
+        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "3") && (optiontypechoice==="delivers")) {
+            newEdge = { from: 2, to: 3, label: "Доставляет"}
+        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "4") && (optiontypechoice==="delivers")) {
+            newEdge = { from: 2, to: 4, label: "Доставляет"}
+        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "5") && (optiontypechoice==="delivers")) {
+            newEdge = { from: 2, to: 5, label: "Доставляет"}
+        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "1") && (optiontypechoice==="delivers")) {
+            newEdge = { from: 3, to: 1, label: "Доставляет"}
+        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "2") && (optiontypechoice==="delivers")) {
+            newEdge = { from: 3, to: 2, label: "Доставляет"}
+        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "4") && (optiontypechoice==="delivers")) {
+            newEdge = { from: 3, to: 4, label: "Доставляет"}
+        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "5") && (optiontypechoice==="delivers")) {
+            newEdge = { from: 3, to: 5, label: "Доставляет"}
+        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "1") && (optiontypechoice==="delivers")) {
+            newEdge = { from: 4, to: 1, label: "Доставляет"}
+        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "2") && (optiontypechoice==="delivers")) {
+            newEdge = { from: 4, to: 2, label: "Доставляет"}
+        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "3") && (optiontypechoice==="delivers")) {
+            newEdge = { from: 4, to: 3, label: "Доставляет"}
+        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "5") && (optiontypechoice==="delivers")) {
+            newEdge = { from: 4, to: 5, label: "Доставляет"}
+        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "1") && (optiontypechoice==="delivers")) {
+            newEdge = { from: 5, to: 1, label: "Доставляет"}
+        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "2") && (optiontypechoice==="delivers")) {
+            newEdge = { from: 5, to: 2, label: "Доставляет"}
+        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "3") && (optiontypechoice==="delivers")) {
+            newEdge = { from: 5, to: 3, label: "Доставляет"}
+        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "4") && (optiontypechoice==="delivers")) {
+            newEdge = { from: 5, to: 4, label: "Доставляет"}
+        }//delivers
+        else if ((optionfirstchoice === "1") && (optionsecondchoice === "1") && (optiontypechoice==="checks")) {
+            newEdge = { from: 1, to: 1}
+        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "2") && (optiontypechoice==="checks")) {
+            newEdge = { from: 2, to: 2}
+        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "3") && (optiontypechoice==="checks")) {
+            newEdge = { from: 3, to: 3}
+        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "4") && (optiontypechoice==="checks")) {
+            newEdge = { from: 4, to: 4}
+        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "5") && (optiontypechoice==="checks")) {
+            newEdge = { from: 5, to: 5}
+        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "2") && (optiontypechoice==="checks")) {
+            newEdge = { from: 1, to: 2, label: "Проверяет"}
+        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "3") && (optiontypechoice==="checks")) {
+            newEdge = { from: 1, to: 3, label: "Проверяет"}
+        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "4") && (optiontypechoice==="checks")) {
+            newEdge = { from: 1, to: 4, label: "Проверяет"}
+        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "5") && (optiontypechoice==="checks")) {
+            newEdge = { from: 1, to: 5, label: "Проверяет"}
+        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "1") && (optiontypechoice==="checks")) {
+            newEdge = { from: 2, to: 1, label: "Проверяет"}
+        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "3") && (optiontypechoice==="checks")) {
+            newEdge = { from: 2, to: 3, label: "Проверяет"}
+        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "4") && (optiontypechoice==="checks")) {
+            newEdge = { from: 2, to: 4, label: "Проверяет"}
+        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "5") && (optiontypechoice==="checks")) {
+            newEdge = { from: 2, to: 5, label: "Проверяет"}
+        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "1") && (optiontypechoice==="checks")) {
+            newEdge = { from: 3, to: 1, label: "Проверяет"}
+        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "2") && (optiontypechoice==="checks")) {
+            newEdge = { from: 3, to: 2, label: "Проверяет"}
+        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "4") && (optiontypechoice==="checks")) {
+            newEdge = { from: 3, to: 4, label: "Проверяет"}
+        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "5") && (optiontypechoice==="checks")) {
+            newEdge = { from: 3, to: 5, label: "Проверяет"}
+        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "1") && (optiontypechoice==="checks")) {
+            newEdge = { from: 4, to: 1, label: "Проверяет"}
+        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "2") && (optiontypechoice==="checks")) {
+            newEdge = { from: 4, to: 2, label: "Проверяет"}
+        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "3") && (optiontypechoice==="checks")) {
+            newEdge = { from: 4, to: 3, label: "Проверяет"}
+        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "5") && (optiontypechoice==="checks")) {
+            newEdge = { from: 4, to: 5, label: "Проверяет"}
+        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "1") && (optiontypechoice==="checks")) {
+            newEdge = { from: 5, to: 1, label: "Проверяет"}
+        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "2") && (optiontypechoice==="checks")) {
+            newEdge = { from: 5, to: 2, label: "Проверяет"}
+        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "3") && (optiontypechoice==="checks")) {
+            newEdge = { from: 5, to: 3, label: "Проверяет"}
+        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "4") && (optiontypechoice==="checks")) {
+            newEdge = { from: 5, to: 4, label: "Проверяет"}
+        }//checks
         newGraph.edges.push(newEdge);
         setGraphData(newGraph);
     }
@@ -196,6 +405,13 @@ function App() {
                     <option value="3">Вершина 3</option>
                     <option value="4">Вершина 4</option>
                     <option value="5">Вершина 5</option>
+                </select>
+                <select name="optionfour" onChange={e => setOptionTypeEdge(e.target.value)}>
+                    <option value="uses">Использует</option>
+                    <option value="contains">Содержит</option>
+                    <option value="forms">Формирует</option>
+                    <option value="delivers">Доставляет</option>
+                    <option value="checks">Проверяет</option>
                 </select>
                 <button onClick={connectNodes}>Связать вершины</button>
                 <ConnectionsMenu/>
