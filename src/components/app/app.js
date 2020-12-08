@@ -1,41 +1,33 @@
 import React, { useState } from 'react';
 import Graph from 'react-graph-vis';
 import cloneDeep from 'lodash/cloneDeep';
-import LoginMenu from '../login-menu';
-import AddBigMenu from '../add-big-menu';
-import AddMenu from '../add-menu';
-import CategoryFilterMenu from '../category-filter-menu';
-import ChangeMenu from '../change-menu';
-import ConnectionsMenu from '../connections-menu';
-import DistanceFilterMenu from '../distance-filter-menu';
-import RefreshVisualMenu from '../refresh-visual-menu';
-import RelationMenu from '../relation-menu';
-import SearchMenu from '../search-menu';
+import Select from 'react-select';
+import { v4 as uuidv4 } from 'uuid';
 import './app.css';
 
 
 
 const graph = {
     nodes: [
-        { id: 1, label: "Вершина 1", color: "#e04141", size: 14 },
-        { id: 2, label: "Вершина 2", color: "#e09c41", size: 14 },
-        { id: 3, label: "Вершина 3", color: "#e0df41", size: 18 },
-        { id: 4, label: "Вершина 4", color: "#7be041", size: 18 },
-        { id: 5, label: "Вершина 5", color: "#41e0c9", size: 14 }
+        { id: 1, label: "Вершина 1", group: 'group1', hidden: false},
+        { id: 2, label: "Вершина 2", group: 'group3', hidden: false},
+        { id: 3, label: "Вершина 3", group: 'group2', hidden: false},
+        { id: 4, label: "Вершина 4", group: 'group2', hidden: false},
+        { id: 5, label: "Вершина 5", group: 'group4', hidden: false}
     ],
     edges: [
-        { from: 1, to: 2, label: "Использует"},
-        { from: 1, to: 3, label: "Содержит"},
-        { from: 1, to: 4, label: "Формирует"},
-        { from: 2, to: 4, label: "Доставляет"},
-        { from: 2, to: 5, label: "Проверяет"}
+        { id: 1, from: 1, to: 2, label: "Использует"},
+        { id: 2, from: 1, to: 3, label: "Содержит"},
+        { id: 3, from: 1, to: 4, label: "Формирует"},
+        { id: 4, from: 2, to: 4, label: "Доставляет"},
+        { id: 5, from: 2, to: 5, label: "Проверяет"}
     ]
 }
 
 const options = {
     layout: {
         hierarchical: false,
-        randomSeed: undefined
+        randomSeed: false
     },
     nodes: {
         shape: 'dot',
@@ -58,6 +50,14 @@ const options = {
     },
     physics: {
         enabled: false
+    },
+    groups: {
+        group1: {color: "#e04141", size: 14},
+        group2: {color: "#7be041", size: 18},
+        group3: {color: "#e09c41", size: 14},
+        group4: {color: "#41e0c9", size: 14},
+        addedgroup1: {color: "#e571c2", size: 14},
+        addedgroup2: {color: "#e2fsas", size: 18}
     }
 }
 
@@ -74,26 +74,60 @@ const events = {
 function App() {
     const [graphData, setGraphData] = useState(graph);//пока что используется для добавления вершины (изменение графа)
     const [inputNameNode, setInputNameNode] = useState('');//пока что используется для ввода имени вершины в меню "Добавить вершину"
-    // const [inputFeature, setInputFeature] = useState('');
-    // const [inputFeatureValue, setInputFeatureValue] = useState('');
     const [optionSize, setOptionSize] = useState(14);
     const [optionFirstNode, setOptionFirstNode] = useState();
     const [optionSecondNode, setOptionSecondNode] = useState();
     const [optionTypeEdge, setOptionTypeEdge] = useState();
+    const [inputDistance, setInputDistance] = useState();
+    const [optionDistance, setOptionDistance] = useState();
+
     
     const generateNode = e => {
         let newGraph = cloneDeep(graphData);
         let inputtext = cloneDeep(inputNameNode);
         let optionsizechoice = cloneDeep(optionSize);
         const newNodeId = Math.max(...newGraph.nodes.map(d => d.id)) + 1;
-        let newNode = { id: newNodeId, label: `${inputtext}`, color: "#ffffff", size: 14};
+        let newNode = { id: newNodeId, label: `${inputtext}`, group: 'addedgroup1', hidden: false};
         if (optionsizechoice === "USUAL") {
-            newNode = { id: newNodeId, label: `${inputtext}`, color: "#ffffff", size: 14}
+            newNode = { id: newNodeId, label: `${inputtext}`, group: 'addedgroup1', hidden: false}
         }
         else if (optionsizechoice === "BIG") {
-            newNode = { id: newNodeId, label: `${inputtext}`, color: "#ffffff", size: 18}
+            newNode = { id: newNodeId, label: `${inputtext}`, group: 'addedgroup2', hidden: false}
         }
         newGraph.nodes.push(newNode);
+        setGraphData(newGraph);
+    }
+
+    // { id: 1, label: "Вершина 1", group: 'group1'},
+    //     { id: 2, label: "Вершина 2", color: "#e09c41", size: 14 },
+    //     { id: 3, label: "Вершина 3", group: 'group2'},
+    //     { id: 4, label: "Вершина 4", group: 'group2'},
+    //     { id: 5, label: "Вершина 5", color: "#41e0c9", size: 14}
+
+    const filterDistance = e => {
+        let newGraph = cloneDeep(graphData);
+        let inputdist = cloneDeep(inputDistance);
+        let optiondist = cloneDeep(optionDistance);
+        if ((inputdist === "1") && (optiondist === "1")) {
+            graphData.nodes[5].hidden = true;
+        }
+        else if ((inputdist === "1") && (optiondist === "2")) {
+            graphData.nodes[3].hidden = true;
+        }
+        else if ((inputdist === "1") && (optiondist === "3")) {
+            graphData.nodes[2] = { id: 2, label: "Вершина 2", color: "e09c41", size: 14, hidden: true };
+            graphData.nodes[4] = { id: 4, label: "Вершина 4", group: 'group2', hidden: true };
+            graphData.nodes[5] = { id: 5, label: "Вершина 5", color: "41e0c9", size: 14, hidden: true };
+        }
+        else if ((inputdist === "1") && (optiondist === "4")) {
+            graphData.nodes[3] = { id: 3, label: "Вершина 3", group: 'group2', hidden: true };
+            graphData.nodes[5] = { id: 5, label: "Вершина 5", color: "41e0c9", size: 14, hidden: true };
+        }
+        else if ((inputdist === "1") && (optiondist === "4")) {
+            graphData.nodes[1] = { id: 1, label: "Вершина 1", group: 'group1', hidden: true };
+            graphData.nodes[3] = { id: 3, label: "Вершина 3", group: 'group2', hidden: true };
+            graphData.nodes[4] = { id: 4, label: "Вершина 4", group: 'group2', hidden: true };
+        }
         setGraphData(newGraph);
     }
 
@@ -103,343 +137,108 @@ function App() {
         let optionsecondchoice = cloneDeep(optionSecondNode);
         let optiontypechoice = cloneDeep(optionTypeEdge);
         let newEdge = { from: 1, to: 1};
-        if ((optionfirstchoice === "1") && (optionsecondchoice === "1") && (optiontypechoice==="uses")) {
-            newEdge = { from: 1, to: 1}
-        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "2") && (optiontypechoice==="uses")) {
-            newEdge = { from: 2, to: 2}
-        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "3") && (optiontypechoice==="uses")) {
-            newEdge = { from: 3, to: 3}
-        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "4") && (optiontypechoice==="uses")) {
-            newEdge = { from: 4, to: 4}
-        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "5") && (optiontypechoice==="uses")) {
-            newEdge = { from: 5, to: 5}
-        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "2") && (optiontypechoice==="uses")) {
-            newEdge = { from: 1, to: 2, label: "Использует"}
-        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "3") && (optiontypechoice==="uses")) {
-            newEdge = { from: 1, to: 3, label: "Использует"}
-        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "4") && (optiontypechoice==="uses")) {
-            newEdge = { from: 1, to: 4, label: "Использует"}
-        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "5") && (optiontypechoice==="uses")) {
-            newEdge = { from: 1, to: 5, label: "Использует"}
-        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "1") && (optiontypechoice==="uses")) {
-            newEdge = { from: 2, to: 1, label: "Использует"}
-        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "3") && (optiontypechoice==="uses")) {
-            newEdge = { from: 2, to: 3, label: "Использует"}
-        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "4") && (optiontypechoice==="uses")) {
-            newEdge = { from: 2, to: 4, label: "Использует"}
-        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "5") && (optiontypechoice==="uses")) {
-            newEdge = { from: 2, to: 5, label: "Использует"}
-        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "1") && (optiontypechoice==="uses")) {
-            newEdge = { from: 3, to: 1, label: "Использует"}
-        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "2") && (optiontypechoice==="uses")) {
-            newEdge = { from: 3, to: 2, label: "Использует"}
-        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "4") && (optiontypechoice==="uses")) {
-            newEdge = { from: 3, to: 4, label: "Использует"}
-        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "5") && (optiontypechoice==="uses")) {
-            newEdge = { from: 3, to: 5, label: "Использует"}
-        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "1") && (optiontypechoice==="uses")) {
-            newEdge = { from: 4, to: 1, label: "Использует"}
-        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "2") && (optiontypechoice==="uses")) {
-            newEdge = { from: 4, to: 2, label: "Использует"}
-        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "3") && (optiontypechoice==="uses")) {
-            newEdge = { from: 4, to: 3, label: "Использует"}
-        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "5") && (optiontypechoice==="uses")) {
-            newEdge = { from: 4, to: 5, label: "Использует"}
-        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "1") && (optiontypechoice==="uses")) {
-            newEdge = { from: 5, to: 1, label: "Использует"}
-        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "2") && (optiontypechoice==="uses")) {
-            newEdge = { from: 5, to: 2, label: "Использует"}
-        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "3") && (optiontypechoice==="uses")) {
-            newEdge = { from: 5, to: 3, label: "Использует"}
-        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "4") && (optiontypechoice==="uses")) {
-            newEdge = { from: 5, to: 4, label: "Использует"}
-        }//uses
-        else if ((optionfirstchoice === "1") && (optionsecondchoice === "1") && (optiontypechoice==="contains")) {
-            newEdge = { from: 1, to: 1}
-        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "2") && (optiontypechoice==="contains")) {
-            newEdge = { from: 2, to: 2}
-        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "3") && (optiontypechoice==="contains")) {
-            newEdge = { from: 3, to: 3}
-        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "4") && (optiontypechoice==="contains")) {
-            newEdge = { from: 4, to: 4}
-        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "5") && (optiontypechoice==="contains")) {
-            newEdge = { from: 5, to: 5}
-        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "2") && (optiontypechoice==="contains")) {
-            newEdge = { from: 1, to: 2, label: "Содержит"}
-        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "3") && (optiontypechoice==="contains")) {
-            newEdge = { from: 1, to: 3, label: "Содержит"}
-        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "4") && (optiontypechoice==="contains")) {
-            newEdge = { from: 1, to: 4, label: "Содержит"}
-        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "5") && (optiontypechoice==="contains")) {
-            newEdge = { from: 1, to: 5, label: "Содержит"}
-        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "1") && (optiontypechoice==="contains")) {
-            newEdge = { from: 2, to: 1, label: "Содержит"}
-        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "3") && (optiontypechoice==="contains")) {
-            newEdge = { from: 2, to: 3, label: "Содержит"}
-        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "4") && (optiontypechoice==="contains")) {
-            newEdge = { from: 2, to: 4, label: "Содержит"}
-        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "5") && (optiontypechoice==="contains")) {
-            newEdge = { from: 2, to: 5, label: "Содержит"}
-        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "1") && (optiontypechoice==="contains")) {
-            newEdge = { from: 3, to: 1, label: "Содержит"}
-        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "2") && (optiontypechoice==="contains")) {
-            newEdge = { from: 3, to: 2, label: "Содержит"}
-        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "4") && (optiontypechoice==="contains")) {
-            newEdge = { from: 3, to: 4, label: "Содержит"}
-        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "5") && (optiontypechoice==="contains")) {
-            newEdge = { from: 3, to: 5, label: "Содержит"}
-        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "1") && (optiontypechoice==="contains")) {
-            newEdge = { from: 4, to: 1, label: "Содержит"}
-        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "2") && (optiontypechoice==="contains")) {
-            newEdge = { from: 4, to: 2, label: "Содержит"}
-        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "3") && (optiontypechoice==="contains")) {
-            newEdge = { from: 4, to: 3, label: "Содержит"}
-        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "5") && (optiontypechoice==="contains")) {
-            newEdge = { from: 4, to: 5, label: "Содержит"}
-        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "1") && (optiontypechoice==="contains")) {
-            newEdge = { from: 5, to: 1, label: "Содержит"}
-        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "2") && (optiontypechoice==="contains")) {
-            newEdge = { from: 5, to: 2, label: "Содержит"}
-        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "3") && (optiontypechoice==="contains")) {
-            newEdge = { from: 5, to: 3, label: "Содержит"}
-        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "4") && (optiontypechoice==="contains")) {
-            newEdge = { from: 5, to: 4, label: "Содержит"}
-        }//contains
-        else if ((optionfirstchoice === "1") && (optionsecondchoice === "1") && (optiontypechoice==="forms")) {
-            newEdge = { from: 1, to: 1}
-        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "2") && (optiontypechoice==="forms")) {
-            newEdge = { from: 2, to: 2}
-        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "3") && (optiontypechoice==="forms")) {
-            newEdge = { from: 3, to: 3}
-        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "4") && (optiontypechoice==="forms")) {
-            newEdge = { from: 4, to: 4}
-        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "5") && (optiontypechoice==="forms")) {
-            newEdge = { from: 5, to: 5}
-        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "2") && (optiontypechoice==="forms")) {
-            newEdge = { from: 1, to: 2, label: "Формирует"}
-        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "3") && (optiontypechoice==="forms")) {
-            newEdge = { from: 1, to: 3, label: "Формирует"}
-        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "4") && (optiontypechoice==="forms")) {
-            newEdge = { from: 1, to: 4, label: "Формирует"}
-        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "5") && (optiontypechoice==="forms")) {
-            newEdge = { from: 1, to: 5, label: "Формирует"}
-        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "1") && (optiontypechoice==="forms")) {
-            newEdge = { from: 2, to: 1, label: "Формирует"}
-        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "3") && (optiontypechoice==="forms")) {
-            newEdge = { from: 2, to: 3, label: "Формирует"}
-        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "4") && (optiontypechoice==="forms")) {
-            newEdge = { from: 2, to: 4, label: "Формирует"}
-        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "5") && (optiontypechoice==="forms")) {
-            newEdge = { from: 2, to: 5, label: "Формирует"}
-        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "1") && (optiontypechoice==="forms")) {
-            newEdge = { from: 3, to: 1, label: "Формирует"}
-        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "2") && (optiontypechoice==="forms")) {
-            newEdge = { from: 3, to: 2, label: "Формирует"}
-        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "4") && (optiontypechoice==="forms")) {
-            newEdge = { from: 3, to: 4, label: "Формирует"}
-        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "5") && (optiontypechoice==="forms")) {
-            newEdge = { from: 3, to: 5, label: "Формирует"}
-        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "1") && (optiontypechoice==="forms")) {
-            newEdge = { from: 4, to: 1, label: "Формирует"}
-        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "2") && (optiontypechoice==="forms")) {
-            newEdge = { from: 4, to: 2, label: "Формирует"}
-        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "3") && (optiontypechoice==="forms")) {
-            newEdge = { from: 4, to: 3, label: "Формирует"}
-        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "5") && (optiontypechoice==="forms")) {
-            newEdge = { from: 4, to: 5, label: "Формирует"}
-        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "1") && (optiontypechoice==="forms")) {
-            newEdge = { from: 5, to: 1, label: "Формирует"}
-        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "2") && (optiontypechoice==="forms")) {
-            newEdge = { from: 5, to: 2, label: "Формирует"}
-        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "3") && (optiontypechoice==="forms")) {
-            newEdge = { from: 5, to: 3, label: "Формирует"}
-        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "4") && (optiontypechoice==="forms")) {
-            newEdge = { from: 5, to: 4, label: "Формирует"}
-        }//forms
-        else if ((optionfirstchoice === "1") && (optionsecondchoice === "1") && (optiontypechoice==="delivers")) {
-            newEdge = { from: 1, to: 1}
-        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "2") && (optiontypechoice==="delivers")) {
-            newEdge = { from: 2, to: 2}
-        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "3") && (optiontypechoice==="delivers")) {
-            newEdge = { from: 3, to: 3}
-        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "4") && (optiontypechoice==="delivers")) {
-            newEdge = { from: 4, to: 4}
-        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "5") && (optiontypechoice==="delivers")) {
-            newEdge = { from: 5, to: 5}
-        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "2") && (optiontypechoice==="delivers")) {
-            newEdge = { from: 1, to: 2, label: "Доставляет"}
-        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "3") && (optiontypechoice==="delivers")) {
-            newEdge = { from: 1, to: 3, label: "Доставляет"}
-        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "4") && (optiontypechoice==="delivers")) {
-            newEdge = { from: 1, to: 4, label: "Доставляет"}
-        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "5") && (optiontypechoice==="delivers")) {
-            newEdge = { from: 1, to: 5, label: "Доставляет"}
-        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "1") && (optiontypechoice==="delivers")) {
-            newEdge = { from: 2, to: 1, label: "Доставляет"}
-        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "3") && (optiontypechoice==="delivers")) {
-            newEdge = { from: 2, to: 3, label: "Доставляет"}
-        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "4") && (optiontypechoice==="delivers")) {
-            newEdge = { from: 2, to: 4, label: "Доставляет"}
-        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "5") && (optiontypechoice==="delivers")) {
-            newEdge = { from: 2, to: 5, label: "Доставляет"}
-        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "1") && (optiontypechoice==="delivers")) {
-            newEdge = { from: 3, to: 1, label: "Доставляет"}
-        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "2") && (optiontypechoice==="delivers")) {
-            newEdge = { from: 3, to: 2, label: "Доставляет"}
-        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "4") && (optiontypechoice==="delivers")) {
-            newEdge = { from: 3, to: 4, label: "Доставляет"}
-        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "5") && (optiontypechoice==="delivers")) {
-            newEdge = { from: 3, to: 5, label: "Доставляет"}
-        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "1") && (optiontypechoice==="delivers")) {
-            newEdge = { from: 4, to: 1, label: "Доставляет"}
-        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "2") && (optiontypechoice==="delivers")) {
-            newEdge = { from: 4, to: 2, label: "Доставляет"}
-        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "3") && (optiontypechoice==="delivers")) {
-            newEdge = { from: 4, to: 3, label: "Доставляет"}
-        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "5") && (optiontypechoice==="delivers")) {
-            newEdge = { from: 4, to: 5, label: "Доставляет"}
-        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "1") && (optiontypechoice==="delivers")) {
-            newEdge = { from: 5, to: 1, label: "Доставляет"}
-        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "2") && (optiontypechoice==="delivers")) {
-            newEdge = { from: 5, to: 2, label: "Доставляет"}
-        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "3") && (optiontypechoice==="delivers")) {
-            newEdge = { from: 5, to: 3, label: "Доставляет"}
-        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "4") && (optiontypechoice==="delivers")) {
-            newEdge = { from: 5, to: 4, label: "Доставляет"}
-        }//delivers
-        else if ((optionfirstchoice === "1") && (optionsecondchoice === "1") && (optiontypechoice==="checks")) {
-            newEdge = { from: 1, to: 1}
-        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "2") && (optiontypechoice==="checks")) {
-            newEdge = { from: 2, to: 2}
-        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "3") && (optiontypechoice==="checks")) {
-            newEdge = { from: 3, to: 3}
-        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "4") && (optiontypechoice==="checks")) {
-            newEdge = { from: 4, to: 4}
-        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "5") && (optiontypechoice==="checks")) {
-            newEdge = { from: 5, to: 5}
-        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "2") && (optiontypechoice==="checks")) {
-            newEdge = { from: 1, to: 2, label: "Проверяет"}
-        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "3") && (optiontypechoice==="checks")) {
-            newEdge = { from: 1, to: 3, label: "Проверяет"}
-        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "4") && (optiontypechoice==="checks")) {
-            newEdge = { from: 1, to: 4, label: "Проверяет"}
-        } else if ((optionfirstchoice === "1") && (optionsecondchoice === "5") && (optiontypechoice==="checks")) {
-            newEdge = { from: 1, to: 5, label: "Проверяет"}
-        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "1") && (optiontypechoice==="checks")) {
-            newEdge = { from: 2, to: 1, label: "Проверяет"}
-        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "3") && (optiontypechoice==="checks")) {
-            newEdge = { from: 2, to: 3, label: "Проверяет"}
-        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "4") && (optiontypechoice==="checks")) {
-            newEdge = { from: 2, to: 4, label: "Проверяет"}
-        } else if ((optionfirstchoice === "2") && (optionsecondchoice === "5") && (optiontypechoice==="checks")) {
-            newEdge = { from: 2, to: 5, label: "Проверяет"}
-        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "1") && (optiontypechoice==="checks")) {
-            newEdge = { from: 3, to: 1, label: "Проверяет"}
-        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "2") && (optiontypechoice==="checks")) {
-            newEdge = { from: 3, to: 2, label: "Проверяет"}
-        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "4") && (optiontypechoice==="checks")) {
-            newEdge = { from: 3, to: 4, label: "Проверяет"}
-        } else if ((optionfirstchoice === "3") && (optionsecondchoice === "5") && (optiontypechoice==="checks")) {
-            newEdge = { from: 3, to: 5, label: "Проверяет"}
-        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "1") && (optiontypechoice==="checks")) {
-            newEdge = { from: 4, to: 1, label: "Проверяет"}
-        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "2") && (optiontypechoice==="checks")) {
-            newEdge = { from: 4, to: 2, label: "Проверяет"}
-        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "3") && (optiontypechoice==="checks")) {
-            newEdge = { from: 4, to: 3, label: "Проверяет"}
-        } else if ((optionfirstchoice === "4") && (optionsecondchoice === "5") && (optiontypechoice==="checks")) {
-            newEdge = { from: 4, to: 5, label: "Проверяет"}
-        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "1") && (optiontypechoice==="checks")) {
-            newEdge = { from: 5, to: 1, label: "Проверяет"}
-        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "2") && (optiontypechoice==="checks")) {
-            newEdge = { from: 5, to: 2, label: "Проверяет"}
-        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "3") && (optiontypechoice==="checks")) {
-            newEdge = { from: 5, to: 3, label: "Проверяет"}
-        } else if ((optionfirstchoice === "5") && (optionsecondchoice === "4") && (optiontypechoice==="checks")) {
-            newEdge = { from: 5, to: 4, label: "Проверяет"}
-        }//checks
+        const newEdgeId = Math.max(...newGraph.edges.map(d => d.id)) + 1;
+        if ((optionfirstchoice === "1") && (optionsecondchoice === "1") && ((optiontypechoice==="1") || (optiontypechoice==="2") || (optiontypechoice==="3") || (optiontypechoice==="4") || (optiontypechoice==="5"))) {
+            newEdge = { id: newEdgeId, from: optionfirstchoice, to: optionsecondchoice}
+        }
+        else if ((optionfirstchoice === "1") && (optionsecondchoice === "2") && (optiontypechoice==="1")) {
+            newEdge = { id: newEdgeId, from: optionfirstchoice, to: optionsecondchoice, label: "Использует"}
+        }
+        else if ((optionfirstchoice === "1") && (optionsecondchoice === "3") && (optiontypechoice==="2")) {
+            newEdge = { id: newEdgeId, from: optionfirstchoice, to: optionsecondchoice, label: "Содержит"}
+        }
+        else if ((optionfirstchoice === "1") && (optionsecondchoice === "4") && (optiontypechoice==="3")) {
+            newEdge = { id: newEdgeId, from: optionfirstchoice, to: optionsecondchoice, label: "Формирует"}
+        }
+        else if ((optionfirstchoice === "1") && (optionsecondchoice === "5") && (optiontypechoice==="4")) {
+            newEdge = { id: newEdgeId, from: optionfirstchoice, to: optionsecondchoice, label: "Доставляет"}
+        }
+        else if ((optionfirstchoice === "2") && (optionsecondchoice === "2") && (optiontypechoice==="5")) {
+            newEdge = { id: newEdgeId, from: optionfirstchoice, to: optionsecondchoice, label: "Проверяет"}
+        }
         newGraph.edges.push(newEdge);
         setGraphData(newGraph);
     }
-    // function generateFeature() {
-    //     let newGraph = cloneDeep(graphData);
-    //     let inputtext2 = cloneDeep(inputFeature);
-    //     let inputtext3 = cloneDeep(inputFeatureValue);
 
-    //     return (
-    //         <div>
-    //             <input value={inputFeature} onInput={e => setInputFeature(e.target.value)}/>
-    //             <input value={inputFeatureValue} onInput={e => setInputFeatureValue(e.target.value)}/>
-    //         </div>
-    //     )
-    // }
+    const generateFeatures = e => {
+        return (
+            <div>
+                <input type="text"/>
+                <input type="text"/>
+            </div>
+        )
+    }
 
     return (
         <div className="app">
-            <Graph graph={graphData} options={options} events={events} style={ { width: "90%", height: "650px" } } />
+            <Graph key={uuidv4} graph={graphData} options={options} events={events} style={ { width: "90%", height: "650px" } } />
             <div className="app-blocks">
-                <LoginMenu/>
                 <div className="textaddversh">
                     <h4 className="addversh">Добавить вершину</h4>
                 </div>
-                <AddMenu/>
+                <h4>Название</h4>
                 <input value={inputNameNode} onInput={e => setInputNameNode(e.target.value)}/>
+                <h4>Размер</h4>
                 <select name="option" onChange={e => setOptionSize(e.target.value)}>
                     <option value="USUAL">Обычный</option>
                     <option value="BIG">Большой</option>
                 </select>
+                <button onClick={generateFeatures}>Добавить свойство</button>
                 <button onClick={generateNode}>Добавить вершину</button>
                 <div className="textconnectmenu">
-                    <h4 className="connectmenu">Связать вершины</h4>
+                    <h4 className="connectmenu">Ребра</h4>
                 </div>
-                <select name="optiontwo" onChange={e => setOptionFirstNode(e.target.value)}>
-                    <option value="1">Вершина 1</option>
-                    <option value="2">Вершина 2</option>
-                    <option value="3">Вершина 3</option>
-                    <option value="4">Вершина 4</option>
-                    <option value="5">Вершина 5</option>
-                </select>
-                <select name="optionthree" onChange={e => setOptionSecondNode(e.target.value)}>
-                    <option value="1">Вершина 1</option>
-                    <option value="2">Вершина 2</option>
-                    <option value="3">Вершина 3</option>
-                    <option value="4">Вершина 4</option>
-                    <option value="5">Вершина 5</option>
-                </select>
-                <select name="optionfour" onChange={e => setOptionTypeEdge(e.target.value)}>
-                    <option value="uses">Использует</option>
-                    <option value="contains">Содержит</option>
-                    <option value="forms">Формирует</option>
-                    <option value="delivers">Доставляет</option>
-                    <option value="checks">Проверяет</option>
-                </select>
+                <h4>Начальная вершина</h4>
+                <Select
+                    options={graphData.nodes} 
+                    getOptionLabel={ (option)=>option.label}
+                    getOptionValue={ (option)=>option.id}
+                    name="optiontwo" 
+                    onChange={setOptionFirstNode}/>
+                <h4>Конечная вершина</h4>
+                <Select
+                    options={graphData.nodes} 
+                    getOptionLabel={ (option)=>option.label}
+                    getOptionValue={ (option)=>option.id}
+                    name="optionthree" 
+                    onChange={setOptionSecondNode}/>
+                <h4>Тип ребра</h4>
+                <Select
+                    options={graphData.edges}
+                    getOptionLabel={ (option)=>option.label}
+                    getOptionValue={ (option)=>option.id}
+                    name="optionfour" 
+                    onChange={setOptionTypeEdge}/>
                 <button onClick={connectNodes}>Связать вершины</button>
-                <ConnectionsMenu/>
                 <div className="textfilterdistance">
                     <h4 className="filterdistance">Фильтр по дистанции от вершины</h4>
                 </div>
-                <DistanceFilterMenu/>
+                <h4>Начальная вершина</h4>
+                <select name="optionfive" onChange={e => setOptionDistance(e.target.value)}>
+                    <option value="1">Вершина 1</option>
+                    <option value="2">Вершина 2</option>
+                    <option value="3">Вершина 3</option>
+                    <option value="4">Вершина 4</option>
+                    <option value="5">Вершина 5</option>
+                </select>
+                <h4>Дистанция</h4>
+                <input value={inputDistance} onInput={e => setInputDistance(e.target.value)}/>
+                <button onClick={filterDistance}>Показать визуализацию</button>
                 <div className="textcategfilter">
                     <h4 className="categfilter">Фильтр по разделу</h4>
                 </div>
-                <CategoryFilterMenu/>
                 <div className="textsearch">
                     <h4 className="searmenu">Поиск</h4>
                 </div>
-                <SearchMenu/>
                 <div className="textaddbigmenu">
                     <h4 className="bigmenu">Добавить вершину</h4>
                 </div>
-                <AddBigMenu/>
                 <div className="textchangemenu">
                     <h4 className="chanmenu">Изменить/удалить вершину</h4>
                 </div>
-                <ChangeMenu/>
                 <div className="textrelat">
                     <h4 className="relatmenu">Ребра</h4>
                 </div>
-                <RelationMenu/>
-                <RefreshVisualMenu/>
             </div>
         </div>
     )
