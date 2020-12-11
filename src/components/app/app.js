@@ -5,8 +5,6 @@ import Select from 'react-select';
 import { v4 as uuidv4 } from 'uuid';
 import './app.css';
 
-
-
 const graph = {
     nodes: [
         { id: 1, label: "Вершина 1", group: 'group1', hidden: false},
@@ -74,27 +72,86 @@ const events = {
 function App() {
     const [graphData, setGraphData] = useState(graph);//пока что используется для добавления вершины (изменение графа)
     const [inputNameNode, setInputNameNode] = useState('');//пока что используется для ввода имени вершины в меню "Добавить вершину"
-    const [optionSize, setOptionSize] = useState(14);
+    const [optionSize, setOptionSize] = useState();
     const [optionFirstNode, setOptionFirstNode] = useState();
     const [optionSecondNode, setOptionSecondNode] = useState();
     const [optionTypeEdge, setOptionTypeEdge] = useState();
-    const [inputDistance, setInputDistance] = useState();
+    const [inputDistance, setInputDistance] = useState('');
     const [optionDistance, setOptionDistance] = useState();
 
+    const handleChangeTypeEdge = e => {
+        setOptionTypeEdge(e.value);
+    }
+
+    const dataforsize = [
+        {value: 1, label: "Обычный"},
+        {value: 2, label: "Большой"}
+    ]
+
+    const handleChangeSize = e => {
+        setOptionSize(e.value);
+    }
     
     const generateNode = e => {
         let newGraph = cloneDeep(graphData);
         let inputtext = cloneDeep(inputNameNode);
         let optionsizechoice = cloneDeep(optionSize);
         const newNodeId = Math.max(...newGraph.nodes.map(d => d.id)) + 1;
-        let newNode = { id: newNodeId, label: `${inputtext}`, group: 'addedgroup1', hidden: false};
-        if (optionsizechoice === "USUAL") {
+        let newNode = {};
+        if (optionsizechoice === 1) {
             newNode = { id: newNodeId, label: `${inputtext}`, group: 'addedgroup1', hidden: false}
         }
-        else if (optionsizechoice === "BIG") {
+        else if (optionsizechoice === 2) {
             newNode = { id: newNodeId, label: `${inputtext}`, group: 'addedgroup2', hidden: false}
         }
         newGraph.nodes.push(newNode);
+        setGraphData(newGraph);
+    }
+
+    const dataforedge = {
+        dfe: [
+            {value: 1, label: "Использует"},
+            {value: 2, label: "Содержит"},
+            {value: 3, label: "Формирует"},
+            {value: 4, label: "Доставляет"},
+            {value: 5, label: "Проверяет"}
+        ]
+    }
+
+    const handleChangeFirstNode = e => {
+        setOptionFirstNode(e.id);
+    }
+
+    const handleChangeSecondNode = e => {
+        setOptionSecondNode(e.id);
+    }
+
+    const connectNodes = e => {
+        let newGraph = cloneDeep(graphData);
+        let optionfirstchoice = cloneDeep(optionFirstNode);
+        let optionsecondchoice = cloneDeep(optionSecondNode);
+        let optiontypechoice = cloneDeep(optionTypeEdge);
+        let newEdge = {};
+        const newEdgeId = Math.max(...newGraph.edges.map(d => d.id)) + 1;
+        if ((optionfirstchoice !== optionsecondchoice) && (optionfirstchoice >= 1) && (optionsecondchoice >= 1) && (optiontypechoice  ===1)) {
+            newEdge = { id: newEdgeId, from: optionfirstchoice, to: optionsecondchoice, label: "Использует"}
+        }
+        else if ((optionfirstchoice !== optionsecondchoice) && (optionfirstchoice >= 1) && (optionsecondchoice >= 1) && (optiontypechoice===2)) {
+            newEdge = { id: newEdgeId, from: optionfirstchoice, to: optionsecondchoice, label: "Содержит"}
+        }
+        else if ((optionfirstchoice !== optionsecondchoice) && (optionfirstchoice >= 1) && (optionsecondchoice >= 1) && (optiontypechoice===3)) {
+            newEdge = { id: newEdgeId, from: optionfirstchoice, to: optionsecondchoice, label: "Формирует"}
+        }
+        else if ((optionfirstchoice !== optionsecondchoice) && (optionfirstchoice >= 1) && (optionsecondchoice >= 1) && (optiontypechoice===4)) {
+            newEdge = { id: newEdgeId, from: optionfirstchoice, to: optionsecondchoice, label: "Доставляет"}
+        }
+        else if ((optionfirstchoice !== optionsecondchoice) && (optionfirstchoice >= 1) && (optionsecondchoice >= 1) && (optiontypechoice===5)) {
+            newEdge = { id: newEdgeId, from: optionfirstchoice, to: optionsecondchoice, label: "Проверяет"}
+        }
+        else if ((optionfirstchoice >= 1) && (optionsecondchoice >= 1) && (optiontypechoice >=1)) {
+            newEdge = { id: newEdgeId, from: optionfirstchoice, to: optionsecondchoice}
+        }
+        newGraph.edges.push(newEdge);
         setGraphData(newGraph);
     }
 
@@ -104,59 +161,51 @@ function App() {
     //     { id: 4, label: "Вершина 4", group: 'group2'},
     //     { id: 5, label: "Вершина 5", color: "#41e0c9", size: 14}
 
+    const handleChangeFilterDistance = e => {
+        setOptionDistance(e.id);
+    }
+
     const filterDistance = e => {
         let newGraph = cloneDeep(graphData);
         let inputdist = cloneDeep(inputDistance);
         let optiondist = cloneDeep(optionDistance);
-        if ((inputdist === "1") && (optiondist === "1")) {
-            graphData.nodes[5].hidden = true;
+        // let idnode;
+        // let idofnode = graphData.nodes.find(obj => obj.id === idnode);
+        if ((inputdist === "1") && (optiondist === 1)) {
+            newGraph.nodes[1] = { id: 1, label: "Вершина 1", group: 'group1', hidden: false};
+            newGraph.nodes[2] = { id: 2, label: "Вершина 2", group: 'group3', hidden: false};
+            newGraph.nodes[3] = { id: 3, label: "Вершина 3", group: 'group2', hidden: false};
+            newGraph.nodes[4] = { id: 4, label: "Вершина 4", group: 'group2', hidden: false};
+            newGraph.nodes[5] = { id: 5, label: "Вершина 5", group: 'group4', hidden: true};
         }
-        else if ((inputdist === "1") && (optiondist === "2")) {
-            graphData.nodes[3].hidden = true;
+        else if ((inputdist === "1") && (optiondist === 2)) {
+            newGraph.nodes[1] = { id: 1, label: "Вершина 1", group: 'group1', hidden: false};
+            newGraph.nodes[2] = { id: 2, label: "Вершина 2", group: 'group3', hidden: false};
+            newGraph.nodes[3] = { id: 3, label: "Вершина 3", group: 'group2', hidden: true};
+            newGraph.nodes[4] = { id: 4, label: "Вершина 4", group: 'group2', hidden: false};
+            newGraph.nodes[5] = { id: 5, label: "Вершина 5", group: 'group4', hidden: false};
         }
-        else if ((inputdist === "1") && (optiondist === "3")) {
-            graphData.nodes[2] = { id: 2, label: "Вершина 2", color: "e09c41", size: 14, hidden: true };
-            graphData.nodes[4] = { id: 4, label: "Вершина 4", group: 'group2', hidden: true };
-            graphData.nodes[5] = { id: 5, label: "Вершина 5", color: "41e0c9", size: 14, hidden: true };
+        else if ((inputdist === "1") && (optiondist === 3)) {
+            newGraph.nodes[1] = { id: 1, label: "Вершина 1", group: 'group1', hidden: false};
+            newGraph.nodes[2] = { id: 2, label: "Вершина 2", group: 'group3', hidden: true};
+            newGraph.nodes[3] = { id: 3, label: "Вершина 3", group: 'group2', hidden: false};
+            newGraph.nodes[4] = { id: 4, label: "Вершина 4", group: 'group2', hidden: true};
+            newGraph.nodes[5] = { id: 5, label: "Вершина 5", group: 'group4', hidden: true};
         }
-        else if ((inputdist === "1") && (optiondist === "4")) {
-            graphData.nodes[3] = { id: 3, label: "Вершина 3", group: 'group2', hidden: true };
-            graphData.nodes[5] = { id: 5, label: "Вершина 5", color: "41e0c9", size: 14, hidden: true };
+        else if ((inputdist === "1") && (optiondist === 4)) {
+            newGraph.nodes[1] = { id: 1, label: "Вершина 1", group: 'group1', hidden: false};
+            newGraph.nodes[2] = { id: 2, label: "Вершина 2", group: 'group3', hidden: false};
+            newGraph.nodes[3] = { id: 3, label: "Вершина 3", group: 'group2', hidden: true};
+            newGraph.nodes[4] = { id: 4, label: "Вершина 4", group: 'group2', hidden: false};
+            newGraph.nodes[5] = { id: 5, label: "Вершина 5", group: 'group4', hidden: true};
         }
-        else if ((inputdist === "1") && (optiondist === "4")) {
-            graphData.nodes[1] = { id: 1, label: "Вершина 1", group: 'group1', hidden: true };
-            graphData.nodes[3] = { id: 3, label: "Вершина 3", group: 'group2', hidden: true };
-            graphData.nodes[4] = { id: 4, label: "Вершина 4", group: 'group2', hidden: true };
+        else if ((inputdist === "1") && (optiondist === 5)) {
+            newGraph.nodes[1] = { id: 1, label: "Вершина 1", group: 'group1', hidden: true};
+            newGraph.nodes[2] = { id: 2, label: "Вершина 2", group: 'group3', hidden: false};
+            newGraph.nodes[3] = { id: 3, label: "Вершина 3", group: 'group2', hidden: true};
+            newGraph.nodes[4] = { id: 4, label: "Вершина 4", group: 'group2', hidden: true};
+            newGraph.nodes[5] = { id: 5, label: "Вершина 5", group: 'group4', hidden: false};
         }
-        setGraphData(newGraph);
-    }
-
-    const connectNodes = e => {
-        let newGraph = cloneDeep(graphData);
-        let optionfirstchoice = cloneDeep(optionFirstNode);
-        let optionsecondchoice = cloneDeep(optionSecondNode);
-        let optiontypechoice = cloneDeep(optionTypeEdge);
-        let newEdge = { from: 1, to: 1};
-        const newEdgeId = Math.max(...newGraph.edges.map(d => d.id)) + 1;
-        if ((optionfirstchoice === "1") && (optionsecondchoice === "1") && ((optiontypechoice==="1") || (optiontypechoice==="2") || (optiontypechoice==="3") || (optiontypechoice==="4") || (optiontypechoice==="5"))) {
-            newEdge = { id: newEdgeId, from: optionfirstchoice, to: optionsecondchoice}
-        }
-        else if ((optionfirstchoice === "1") && (optionsecondchoice === "2") && (optiontypechoice==="1")) {
-            newEdge = { id: newEdgeId, from: optionfirstchoice, to: optionsecondchoice, label: "Использует"}
-        }
-        else if ((optionfirstchoice === "1") && (optionsecondchoice === "3") && (optiontypechoice==="2")) {
-            newEdge = { id: newEdgeId, from: optionfirstchoice, to: optionsecondchoice, label: "Содержит"}
-        }
-        else if ((optionfirstchoice === "1") && (optionsecondchoice === "4") && (optiontypechoice==="3")) {
-            newEdge = { id: newEdgeId, from: optionfirstchoice, to: optionsecondchoice, label: "Формирует"}
-        }
-        else if ((optionfirstchoice === "1") && (optionsecondchoice === "5") && (optiontypechoice==="4")) {
-            newEdge = { id: newEdgeId, from: optionfirstchoice, to: optionsecondchoice, label: "Доставляет"}
-        }
-        else if ((optionfirstchoice === "2") && (optionsecondchoice === "2") && (optiontypechoice==="5")) {
-            newEdge = { id: newEdgeId, from: optionfirstchoice, to: optionsecondchoice, label: "Проверяет"}
-        }
-        newGraph.edges.push(newEdge);
         setGraphData(newGraph);
     }
 
@@ -173,72 +222,59 @@ function App() {
         <div className="app">
             <Graph key={uuidv4} graph={graphData} options={options} events={events} style={ { width: "90%", height: "650px" } } />
             <div className="app-blocks">
-                <div className="textaddversh">
-                    <h4 className="addversh">Добавить вершину</h4>
+                <h4 className="textoutside">Добавить вершину</h4>
+                <div className="menu">
+                    <h4 className="textinside">Название</h4>
+                    <input className="input" value={inputNameNode} onInput={e => setInputNameNode(e.target.value)}/>
+                    <h4 className="textinside">Размер</h4>
+                    <Select
+                        className="select"
+                        options={dataforsize}
+                        getOptionLabel={ (option)=>option.label}
+                        value={dataforsize.find(obj => obj.value === optionSize)}
+                        onChange={handleChangeSize}/>
+                    <button className="button" onClick={generateFeatures}>Добавить свойство</button>
+                    <button className="buttonlast" onClick={generateNode}>Добавить вершину</button>
                 </div>
-                <h4>Название</h4>
-                <input value={inputNameNode} onInput={e => setInputNameNode(e.target.value)}/>
-                <h4>Размер</h4>
-                <select name="option" onChange={e => setOptionSize(e.target.value)}>
-                    <option value="USUAL">Обычный</option>
-                    <option value="BIG">Большой</option>
-                </select>
-                <button onClick={generateFeatures}>Добавить свойство</button>
-                <button onClick={generateNode}>Добавить вершину</button>
-                <div className="textconnectmenu">
-                    <h4 className="connectmenu">Ребра</h4>
+                <h4 className="textoutside">Ребра</h4>
+                <div className="menu">
+                    <h4 className="textinside">Начальная вершина</h4>
+                    <Select
+                        className="select"
+                        options={graphData.nodes}
+                        value={graphData.nodes.find(obj => obj.id === optionFirstNode)}
+                        onChange={handleChangeFirstNode}/>
+                    <h4 className="textinside">Конечная вершина</h4>
+                    <Select
+                        className="select"
+                        options={graphData.nodes}
+                        value={graphData.nodes.find(obj => obj.id === optionSecondNode)}
+                        onChange={handleChangeSecondNode}/>
+                    <h4 className="textinside">Тип ребра</h4>
+                    <Select
+                        className="select"
+                        options={dataforedge.dfe}
+                        value={dataforedge.dfe.find(obj => obj.value === optionTypeEdge)}
+                        onChange={handleChangeTypeEdge}/>
+                    <button className="buttonlast" onClick={connectNodes}>Связать вершины</button>
                 </div>
-                <h4>Начальная вершина</h4>
-                <Select
-                    options={graphData.nodes} 
-                    getOptionLabel={ (option)=>option.label}
-                    getOptionValue={ (option)=>option.id}
-                    name="optiontwo" 
-                    onChange={setOptionFirstNode}/>
-                <h4>Конечная вершина</h4>
-                <Select
-                    options={graphData.nodes} 
-                    getOptionLabel={ (option)=>option.label}
-                    getOptionValue={ (option)=>option.id}
-                    name="optionthree" 
-                    onChange={setOptionSecondNode}/>
-                <h4>Тип ребра</h4>
-                <Select
-                    options={graphData.edges}
-                    getOptionLabel={ (option)=>option.label}
-                    getOptionValue={ (option)=>option.id}
-                    name="optionfour" 
-                    onChange={setOptionTypeEdge}/>
-                <button onClick={connectNodes}>Связать вершины</button>
-                <div className="textfilterdistance">
-                    <h4 className="filterdistance">Фильтр по дистанции от вершины</h4>
+                <h4 className="textoutside">Фильтр по дистанции от вершины</h4>
+                <div className="menu">
+                    <h4 className="textinside">Начальная вершина</h4>
+                    <Select
+                        className="select"
+                        options={graphData.nodes}
+                        value={graphData.nodes.find(obj => obj.id === optionDistance)}
+                        onChange={handleChangeFilterDistance}/>
+                    <h4 className="textinside">Дистанция</h4>
+                    <input className="input" value={inputDistance} onInput={e => setInputDistance(e.target.value)}/>
+                    <button className="buttonlast" onClick={filterDistance}>Показать визуализацию</button>
                 </div>
-                <h4>Начальная вершина</h4>
-                <select name="optionfive" onChange={e => setOptionDistance(e.target.value)}>
-                    <option value="1">Вершина 1</option>
-                    <option value="2">Вершина 2</option>
-                    <option value="3">Вершина 3</option>
-                    <option value="4">Вершина 4</option>
-                    <option value="5">Вершина 5</option>
-                </select>
-                <h4>Дистанция</h4>
-                <input value={inputDistance} onInput={e => setInputDistance(e.target.value)}/>
-                <button onClick={filterDistance}>Показать визуализацию</button>
-                <div className="textcategfilter">
-                    <h4 className="categfilter">Фильтр по разделу</h4>
-                </div>
-                <div className="textsearch">
-                    <h4 className="searmenu">Поиск</h4>
-                </div>
-                <div className="textaddbigmenu">
-                    <h4 className="bigmenu">Добавить вершину</h4>
-                </div>
-                <div className="textchangemenu">
-                    <h4 className="chanmenu">Изменить/удалить вершину</h4>
-                </div>
-                <div className="textrelat">
-                    <h4 className="relatmenu">Ребра</h4>
-                </div>
+                <h4 className="categfilter">Фильтр по разделу</h4>
+                <h4 className="searmenu">Поиск</h4>
+                <h4 className="bigmenu">Добавить вершину</h4>
+                <h4 className="chanmenu">Изменить/удалить вершину</h4>
+                <h4 className="relatmenu">Ребра</h4>
             </div>
         </div>
     )
