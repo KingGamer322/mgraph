@@ -1,35 +1,70 @@
-#### Образовательная платформа для обучения математике
-В эпоху массовых открытых онлайн курсов и широких возможностях дистанционного образования на первый план выходит не доступ к информации как таковой, а эффективный поиск и организация ее усвоения.
+# Getting Started with Create React App
 
-В этой связи хочется особенно выделить две проблемы.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-* Во-первых, частое отсутствие стратегической цели - изучая математику в ВУЗе, многие студенты не видят связи между ней и компетенциями, котирующимися на рынке труда. А иногда не видят и связи между разделами самого предмета.
+## Available Scripts
 
-* С другой стороны, специалисты, повышающие свою квалификацию или желающие сменить профессию хорошо представляют требования рынка, но испытывают трудности с построением образовательного плана, выбора курсов, которые позволят именно им получить в кратчайшие сроки необходимые знания и навыки.
+In the project directory, you can run:
 
-В то же время точные науки, изучаемые в рамках университетской программы, имеют четкую внутреннюю структуру и взаимосвязи, но в силу ограничений традиционного формата и подходов, этот ключевой аспект восприятия остается недоступен большинству слушателей.
+### `npm start`
 
-Мы создаем образовательную платформу, сердцем которой будет граф знаний, отражающий взаимосвязи между разделами математики и других дисциплин, включая профессиональные. 
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-##### Цели продукта:
-1. Агрегация знаний и интеллектуальный поиск
-2. Эффективное формирование у слушателя требуемых компетенций за счет построения индивидуальных образовательных траекторий
-3. Оценка компетенций
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
 
-##### Особенности реализации
+### `npm test`
 
-Основа графа формируется экспертным сообществом специализированных кафедр УрФУ. Однако рамки экспертной системы слишком узки для данной задачи, в связи с чем нельзя обойтись без :
-1. сообщества и
-2. машинного обучения.
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-Наша платформа предполагается открытой системой, на которой заинтересованные авторы и студенты смогут публиковать свой контент, собирать его в гибкие онлайн-курсы и получать актуальные знания и обратную связь.
+### `npm run build`
 
-Таким образом, графовая база знаний будет постоянно расширяться в многопользовательском режиме. Оперативное отслеживание ее структуры, поиск потенциально дублирующих веток графа, выдача рекомендаций авторам, а также семантический поиск по смыслу запроса и его месту в сети связей - первый блок задач, нуждающихся в применении инструментов машинного обучения и анализа данных.
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-Не обойдется без машинного обучения и центральная задача платформы - автоматическое построение индивидуальной образовательной траектории. Траектория в нашем понимании - это последовательность узлов графа, на каждом из которых расположены конкретные тематические учебные материалы.
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-Открытость системы предполагает, что поверх графового скелета разделов, сущностей и логических связей, будут наращиваться слои создаваемых вручную авторских траекторий/курсов и накапливаться статистика по результатам их прохождения студентами. Граф в этом контексте можно рассматривать как плотное переплетение из множества возможных образовательных маршрутов.
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-На формируемом таким образом наборе данных будет осуществляться обучение самой системы синтезу образовательных траекторий как последовательности узлов (возможно с ветвлениями и циклами), обладающей заданным набором свойств, а точнее образовательных результатов.
+### `npm run eject`
 
-В настоящий момент проект находится на стадии первого шага разработки прототипа - создания web-сервиса, отвечающего за ручное редактирование графа знаний.
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+
+## Learn More
+
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
+
+### Code Splitting
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+
+### Analyzing the Bundle Size
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+
+### Making a Progressive Web App
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+
+### Advanced Configuration
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+
+### Deployment
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `npm run build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
