@@ -362,11 +362,6 @@ function App() {
                     <input className="input" value={inputDistance} onInput={e => setInputDistance(e.target.value)}/>
                     <button className="buttonlast" onClick={filterDistance}>Показать визуализацию</button>
                 </div>
-                <h4 className="categfilter">Фильтр по разделу</h4>
-                <h4 className="searmenu">Поиск</h4>
-                <h4 className="bigmenu">Добавить вершину</h4>
-                <h4 className="chanmenu">Изменить/удалить вершину</h4>
-                <h4 className="relatmenu">Ребра</h4>
             </div>
         </div>
     )
