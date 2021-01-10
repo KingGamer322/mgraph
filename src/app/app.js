@@ -97,7 +97,7 @@ const options = {
         group3: {color: "#e09c41", size: 14},
         group4: {color: "#41e0c9", size: 14},
         addedgroup1: {color: "#e571c2", size: 14},
-        addedgroup2: {color: "#e2fsas", size: 18}
+        addedgroup2: {color: "#1c21e0", size: 18}
     }
 }
 
@@ -180,23 +180,35 @@ function App() {
         let optiontypechoice = cloneDeep(optionTypeEdge);
         let newEdge = {};
         const newEdgeId = Math.max(...newGraph.edges.map(d => d.id)) + 1;
-        if ((optionfirstchoice !== optionsecondchoice) && (optionfirstchoice >= 1) && (optionsecondchoice >= 1) && (optiontypechoice  ===1)) {
-            newEdge = { id: newEdgeId, from: optionfirstchoice, to: optionsecondchoice, label: "Использует"}
+        let countrepeats = 0;
+        for (let i = 0; i < newGraph.edges.length; i++) {
+            if (((newGraph.edges[i].from === optionfirstchoice) && (newGraph.edges[i].to === optionsecondchoice)) || ((newGraph.edges[i].to === optionfirstchoice) && (newGraph.edges[i].from === optionsecondchoice))) {
+                countrepeats += 1;
+            }
+            else if ((optionfirstchoice === optionsecondchoice) && (newGraph.edges[i].from === newGraph.edges[i].to)) {
+                countrepeats +=1;
+            }
         }
-        else if ((optionfirstchoice !== optionsecondchoice) && (optionfirstchoice >= 1) && (optionsecondchoice >= 1) && (optiontypechoice===2)) {
-            newEdge = { id: newEdgeId, from: optionfirstchoice, to: optionsecondchoice, label: "Содержит"}
-        }
-        else if ((optionfirstchoice !== optionsecondchoice) && (optionfirstchoice >= 1) && (optionsecondchoice >= 1) && (optiontypechoice===3)) {
-            newEdge = { id: newEdgeId, from: optionfirstchoice, to: optionsecondchoice, label: "Формирует"}
-        }
-        else if ((optionfirstchoice !== optionsecondchoice) && (optionfirstchoice >= 1) && (optionsecondchoice >= 1) && (optiontypechoice===4)) {
-            newEdge = { id: newEdgeId, from: optionfirstchoice, to: optionsecondchoice, label: "Доставляет"}
-        }
-        else if ((optionfirstchoice !== optionsecondchoice) && (optionfirstchoice >= 1) && (optionsecondchoice >= 1) && (optiontypechoice===5)) {
-            newEdge = { id: newEdgeId, from: optionfirstchoice, to: optionsecondchoice, label: "Проверяет"}
-        }
-        else if ((optionfirstchoice >= 1) && (optionsecondchoice >= 1) && (optiontypechoice >=1)) {
-            newEdge = { id: newEdgeId, from: optionfirstchoice, to: optionsecondchoice}
+        // console.log("count of edges exact to made: " + countrepeats);
+        if (countrepeats === 0) {
+            if ((optionfirstchoice !== optionsecondchoice) && (optionfirstchoice >= 1) && (optionsecondchoice >= 1) && (optiontypechoice  ===1)) {
+                newEdge = { id: newEdgeId, from: optionfirstchoice, to: optionsecondchoice, label: "Использует"}
+            }
+            else if ((optionfirstchoice !== optionsecondchoice) && (optionfirstchoice >= 1) && (optionsecondchoice >= 1) && (optiontypechoice===2)) {
+                newEdge = { id: newEdgeId, from: optionfirstchoice, to: optionsecondchoice, label: "Содержит"}
+            }
+            else if ((optionfirstchoice !== optionsecondchoice) && (optionfirstchoice >= 1) && (optionsecondchoice >= 1) && (optiontypechoice===3)) {
+                newEdge = { id: newEdgeId, from: optionfirstchoice, to: optionsecondchoice, label: "Формирует"}
+            }
+            else if ((optionfirstchoice !== optionsecondchoice) && (optionfirstchoice >= 1) && (optionsecondchoice >= 1) && (optiontypechoice===4)) {
+                newEdge = { id: newEdgeId, from: optionfirstchoice, to: optionsecondchoice, label: "Доставляет"}
+            }
+            else if ((optionfirstchoice !== optionsecondchoice) && (optionfirstchoice >= 1) && (optionsecondchoice >= 1) && (optiontypechoice===5)) {
+                newEdge = { id: newEdgeId, from: optionfirstchoice, to: optionsecondchoice, label: "Проверяет"}
+            }
+            else if ((optionfirstchoice >= 1) && (optionsecondchoice >= 1) && (optiontypechoice >=1)) {
+                newEdge = { id: newEdgeId, from: optionfirstchoice, to: optionsecondchoice}
+            }
         }
         newGraph.edges.push(newEdge);
         setGraphData(newGraph);
