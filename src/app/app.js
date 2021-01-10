@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// import ReactDOM from 'react-dom';
 import Graph from 'react-graph-vis';
 import cloneDeep from 'lodash/cloneDeep';
 import Select from 'react-select';
@@ -189,7 +188,6 @@ function App() {
                 countrepeats +=1;
             }
         }
-        // console.log("count of edges exact to made: " + countrepeats);
         if (countrepeats === 0) {
             if ((optionfirstchoice !== optionsecondchoice) && (optionfirstchoice >= 1) && (optionsecondchoice >= 1) && (optiontypechoice  ===1)) {
                 newEdge = { id: newEdgeId, from: optionfirstchoice, to: optionsecondchoice, label: "Использует"}
@@ -234,49 +232,32 @@ function App() {
         for (let p = 0; p < newGraph.nodes.length; p++) {
             allnodes.push(newGraph.nodes[p].id);
         }
-        // console.log(allnodes);
-        // console.log("length allnodes: " + allnodes.length);
         for (let r = 0; r < newGraph.edges.length; r++) {
             alledges.push(newGraph.edges[r].id);
         }
-        // console.log(alledges);
-        // console.log("length alledges: " + alledges.length);
-        // console.log(newGraph.edges);
         for (let i = 0; i < newGraph.nodes.length; i++) {
             for (let p = 1; p <= inputdist; p++) {
                 if ((p === 1) && (optiondist === i)) {
                     for (let j = 0; j < newGraph.edges.length; j++) {
                         if ((newGraph.edges[j].from === optiondist) && (newGraph.edges[j].to !== optiondist))  {
-                            // console.log("saved edge №" + j + " ::::: chosen node = " + newGraph.edges[j].from + " ::::: saved node = " + newGraph.edges[j].to);
                             savednode.push(newGraph.edges[j].to);
-                            // console.log(savednode);
                         }
                         else if ((newGraph.edges[j].from !== optiondist) && (newGraph.edges[j].to === optiondist)) {
-                            // console.log("maybe saved edge №" + j + " ::::: chosen node = " + newGraph.edges[j].to + " ::::: saved node = " + newGraph.edges[j].from);
                             savednode.push(newGraph.edges[j].from);
-                            // console.log(savednode);
                         }
                     }
-                    // console.log(savednode);
-                    // console.log("length savednode: " + savednode.length);
                     for (let g = 0; g < allnodes.length; g++) {
                         if (savednode.indexOf(allnodes[g])===-1) {
                             notmatching.push(allnodes[g]);
                         }
                     }
-                    // console.log(notmatching + " :: length: " + notmatching.length);
-                    // console.log("savednode: " + savednode);
-                    // console.log("notmatching: " + notmatching);
                 }
                 else if ((p % 2 === 0) && (p >= 2) && (optiondist===i)) {
                     for (let y = 0; y < newGraph.edges.length; y++) {
                         for (let n = 0; n < savednode.length; n++) {
                             for (let b = 0; b < notmatching.length; b++) {
                                 if (((newGraph.edges[y].from === savednode[n]) && (newGraph.edges[y].to === notmatching[b])) || ((newGraph.edges[y].to === savednode[n]) && (newGraph.edges[y].from === notmatching[b]))) {
-                                    // console.log("if it works, it should print nodes that connected to those, that connected to chosen: " + notmatching[b]);
                                     saved2node.push(notmatching[b]);
-                                    // console.log(saved2node);
-                                    // console.log("length saved2node: " + saved2node.length);
                                 }
                             }
                         }
@@ -286,7 +267,6 @@ function App() {
                             not2matching.push(notmatching[f]);
                         }
                     }
-                    // console.log(not2matching + " ::: length not2matching: " + not2matching.length);
                     savednode.splice(0, savednode.length);
                     notmatching.splice(0, notmatching.length);
                 }
@@ -295,10 +275,7 @@ function App() {
                         for (let n = 0; n < saved2node.length; n++) {
                             for (let b = 0; b < not2matching.length; b++) {
                                 if (((newGraph.edges[y].from === saved2node[n]) && (newGraph.edges[y].to === not2matching[b])) || ((newGraph.edges[y].to === saved2node[n]) && (newGraph.edges[y].from === not2matching[b]))) {
-                                    // console.log("if it works, it should print nodes that connected to those, that connected to chosen: " + not2matching[b]);
                                     savednode.push(not2matching[b]);
-                                    // console.log(savednode);
-                                    // console.log("length savednode: " + savednode.length);
                                 }
                             }
                         }
@@ -308,7 +285,6 @@ function App() {
                             notmatching.push(not2matching[f]);
                         }
                     }
-                    // console.log(notmatching + " ::: length notmatching: " + notmatching.length);
                     saved2node.splice(0, saved2node.length);
                     not2matching.splice(0, not2matching.length);
                 }
@@ -334,36 +310,6 @@ function App() {
         }
         setGraphData(newGraph);
     }
-
-    function Welcome(props) {
-        return <h4 className="textinside">{props.name}</h4>
-    }
-
-    function Inputfirst(props) {
-        return <input className="input"/>
-    }
-
-    function Inputsecond(props) {
-        return <input className="input"/>
-    }
-
-    function generateFeatures() {
-        return (
-            <div>
-                <Welcome name="Имя свойства:"/>
-                <Inputfirst/>
-                <Welcome name="Значение:"/>
-                <Inputsecond/>
-            </div>
-        )
-    }
-
-    // function generateFeaturesTwo() {
-    //     ReactDOM.render(
-    //         <generateFeatures/>,
-    //         document.getElementById('root')
-    //     )
-    // }
 
     return (
         <div className="app">
