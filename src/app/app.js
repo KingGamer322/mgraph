@@ -326,7 +326,6 @@ function App() {
                         getOptionLabel={ (option)=>option.label}
                         value={dataforsize.find(obj => obj.value === optionSize)}
                         onChange={handleChangeSize}/>
-                    <button className="button" onClick={generateFeatures}>Добавить свойство</button>
                     <button className="buttonlast" onClick={generateNode}>Добавить вершину</button>
                 </div>
                 <h4 className="textoutside">Ребра</h4>
